@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
+# 原始简历包含不公开的个人信息，仅保留在本地。
+MyResume/*.docx
