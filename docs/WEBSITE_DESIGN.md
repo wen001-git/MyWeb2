@@ -258,9 +258,9 @@ leewen.work
 
 **我在找什么？**
 
-我在寻找值得长期解决的银行数据问题，也在寻找愿意一起探索 AI、图数据库与监管科技未来的伙伴。
+我在寻找真实而有价值的问题，并尝试把我的经验、快速理解复杂业务的能力与 AI 结合，转化为真正能够帮助他人的产品与解决方案。
 
-希望我们做出的，不只是一个系统，而是一套更准确、更透明、更高效的银行数据基础设施。
+我希望做的，不只是完成一项工作，而是持续创造清晰、可靠、可落地的价值。
 
 #### 繁體中文
 
@@ -280,9 +280,9 @@ leewen.work
 
 **我在尋找什麼？**
 
-我在尋找值得長期解決的銀行數據問題，也在尋找願意一起探索 AI、圖資料庫與監管科技未來的夥伴。
+我在尋找真實而有價值的問題，並嘗試把我的經驗、快速理解複雜業務的能力與 AI 結合，轉化為真正能夠幫助他人的產品與解決方案。
 
-希望我們做出的，不只是一個系統，而是一套更準確、更透明、更高效的銀行數據基礎設施。
+我希望做的，不只是完成一項工作，而是持續創造清晰、可靠、可落地的價值。
 
 #### English
 
@@ -302,9 +302,9 @@ Regulation is not an obstacle; it is a moat built on expertise. AI will not repl
 
 **What am I looking for?**
 
-I am looking for bank data problems worth solving over the long term, and for partners who want to explore the future of AI, graph databases, and regulatory technology.
+I am looking for real, worthwhile problems and exploring how to combine my experience, my ability to quickly understand complex businesses, and AI to turn them into products and solutions that genuinely help others.
 
-I hope we can build not merely another system, but a more accurate, transparent, and efficient data infrastructure for banking.
+I hope to do more than complete a task. I want to keep creating value that is clear, reliable, and practical.
 
 ### 4.3 文章
 
@@ -633,6 +633,7 @@ npm run preview
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-07-24 | 更新“我在找什么”的三语文案，从银行数据合作限定扩展为寻找真实问题并用经验、业务理解与 AI 创造可落地价值；why：采用用户最新自我表达 |
 | 2026-07-24 | 删除首页品牌口号、大标题和介绍性副标题，让导航后直接展示双产品卡片；why：用户认为宏大口号尴尬，希望页面只聚焦具体产品 |
 | 2026-07-24 | 将首页重构为双产品并列首屏、一次点击体验和个人背书辅助，并补齐三语核心文案及产品导向验收标准；why：网站首要目标是让用户了解和使用产品，而非优先介绍个人履历 |
 | 2026-07-24 | 将 Astro、TypeScript、Markdown、GitHub Actions 与 GitHub Pages 确定为正式技术架构，并加入三语“关于我”定稿；why：让设计方案可直接指导开发并准确表达用户的银行数据与监管科技定位 |
