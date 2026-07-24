@@ -1,3 +1,8 @@
+---
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+---
+
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -6,7 +11,7 @@
   <meta name="description" content="白板录屏工具与诗词图谱的产品介绍和体验入口。">
   <meta name="theme-color" content="#f7f3ea">
   <title>LEEWEN · 白板录屏工具与诗词图谱</title>
-  <style>
+  <style is:global>
     :root {
       --paper: #f7f3ea;
       --paper-deep: #eee7da;
@@ -718,29 +723,7 @@
 <body>
   <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
 
-  <header class="site-header">
-    <div class="nav-wrap">
-      <a class="brand" href="#products" aria-label="LEEWEN 首页">
-        LEEWEN <small>李家文</small>
-      </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" data-i18n-aria="menuLabel">菜单</button>
-      <div class="nav-panel" id="nav-panel" data-open="false">
-        <nav class="nav-links" aria-label="主导航">
-          <a href="#products" data-i18n="navProducts">产品</a>
-          <a href="#scenarios" data-i18n="navScenarios">使用场景</a>
-          <a href="#creator" data-i18n="navCreator">创作者</a>
-          <a href="#articles" data-i18n="navArticles">文章</a>
-          <a href="#contact" data-i18n="navContact">联系</a>
-        </nav>
-        <div class="lang-switch" aria-label="语言">
-          <button type="button" data-lang="zh-CN" aria-pressed="true">简</button>
-          <button type="button" data-lang="zh-Hant" aria-pressed="false">繁</button>
-          <button type="button" data-lang="en" aria-pressed="false">EN</button>
-        </div>
-        <a class="button button-primary nav-cta" href="#products" data-i18n="navCta">查看产品</a>
-      </div>
-    </div>
-  </header>
+  <SiteHeader />
 
   <main id="main">
     <section class="section hero" id="products">
@@ -844,7 +827,7 @@
     <section class="section" id="creator">
       <div class="creator-card">
         <div class="portrait-frame">
-          <img src="./MyResume/李家文肖像画彩铅1.jpg" alt="李家文的彩铅人物肖像" data-i18n-alt="portraitAlt">
+          <img src="/images/portrait.jpg" alt="李家文的彩铅人物肖像" data-i18n-alt="portraitAlt">
         </div>
         <div class="creator-copy">
           <p class="eyebrow" data-i18n="creatorEyebrow">产品背后的创作者</p>
@@ -913,7 +896,7 @@
           </div>
         </div>
         <div class="qr-card">
-          <img src="./MyResume/leewen2017微信二维码.jpg" alt="微信账号 leewen2017 的二维码" data-i18n-alt="qrAlt">
+          <img src="/images/wechat-qr.jpg" alt="微信账号 leewen2017 的二维码" data-i18n-alt="qrAlt">
           <strong>微信 · leewen2017</strong>
           <small data-i18n="qrNote">添加时请备注：产品名称 / 合作</small>
         </div>
@@ -921,10 +904,7 @@
     </section>
   </main>
 
-  <footer>
-    <span>© 2026 李家文 · leewen.work</span>
-    <span><a href="mailto:8639210@qq.com">8639210@qq.com</a> · <a href="https://github.com/wen001-git/" target="_blank" rel="noopener">GitHub</a></span>
-  </footer>
+  <SiteFooter />
 
   <p class="sr-only" id="language-status" aria-live="polite"></p>
 
