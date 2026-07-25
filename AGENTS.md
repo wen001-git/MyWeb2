@@ -33,7 +33,7 @@
 - 网站必须支持简体中文、繁体中文、英文；核心页面三语齐全，根路径及其子路径提供简体中文，繁体与英文分别使用 `/zh-hant/`、`/en/`。
 - 首页必须产品优先：白板录屏工具与诗词图谱同等级占据首屏或紧邻首屏，并可一次点击进入对应子域名；个人介绍只作为产品信任背书。
 - 首页不使用宏大品牌口号或大幅介绍标题；导航下方直接展示产品卡片，由具体产品名称、用途和按钮承担说明。
-- 产品子域名：`record.leewen.work`、`poem.leewen.work`。
+- 产品子域名：`record.leewen.work`、`poem.leewen.work`；新增的 FCL Pipeline Explorer（房贷止赎数据血缘）目前部署在 GitHub Pages（`wen001-git.github.io/ForeclosureRule2/`），未来应映射到 `lineage.leewen.work` 或类似三级子域名，待 DNS 配置。
 - 视觉方向、页面结构、内容与验收标准以 `docs/WEBSITE_DESIGN.md` 为准。
 - 公开网站不展示简历中的手机号；`8639210@qq.com` 已获准作为公开工作邮箱。
 - 保留 `MyResume` 中的原始简历和画像，不覆盖源文件；公开简历应另行生成脱敏版本。
@@ -52,9 +52,11 @@
 - [x] 已删除首页口号和介绍性大标题，产品卡片直接开场。
 - [x] 已将单文件首页迁移到 Astro + TypeScript 工程，抽出导航和页脚组件，并保留原有三语切换。
 - [x] 已将公开画像与微信二维码迁入 `public/images/`，构建产物可直接部署。
+- [x] 首页 hero/scenarios/articles 三处各新增 FCL Pipeline Explorer 卡片，三语切换完整覆盖。
 - [ ] 尚未实现产品、文章、关于我、合作及 404 等独立页面。
 - [x] 工作邮箱已确定为 `8639210@qq.com`。
 - [ ] 尚未确定产品价格/购买方式、首批正式文章内容。
+- [ ] 为 FCL Pipeline Explorer 申请并配置 leewen.work 三级子域名（如 `lineage.leewen.work`），完成后把首页与对外链接从 GitHub Pages 切到子域名。
 
 ## 下一步 TODO
 
@@ -68,7 +70,7 @@
 
 ## 文件地图
 
-- `src/pages/index.astro`：由原型迁移而来的三语产品优先首页，保留原有 CSS 设计变量与少量交互脚本。
+- `src/pages/index.astro`：由原型迁移而来的三语产品优先首页，保留原有 CSS 设计变量与少量交互脚本；现已包含白板录屏工具、诗词图谱、房贷止赎数据血缘三款产品的首屏并列卡片与对应 scenarios/articles 区块。
 - `src/components/SiteHeader.astro`、`src/components/SiteFooter.astro`：首页公共导航与页脚组件。
 - `public/images/`：可公开部署的彩铅肖像与微信二维码。
 - `astro.config.mjs`、`package.json`、`tsconfig.json`：Astro 静态构建、依赖脚本和 TypeScript 配置。
@@ -95,6 +97,7 @@
 | 日期 | 变更内容 |
 |------|----------|
 | 2026-07-25 | post-build 把 `dist/index.html` 内联成 single-file（CSS/JS/图片→`<style>` / `<script type="module">` / `data:image/...;base64,...`），构建脚本改为 `astro build && node scripts/inline.mjs`，构建完 `dist/` 只剩一个约 1.3 MB 的 `index.html`，可双击亦可单独分发；同步删除了昨日误加的「禁止双击 HTML」硬约束、加入多语言页面落地时的重构提醒；why：用户希望 `dist/index.html` 自身就是可直接打开与分发的单一文件，避免任何额外打包或服务步骤 |
+| 2026-07-25 | 首页 hero / scenarios / articles 三处各新增 FCL Pipeline Explorer 卡片（CSS-only `.lineage-ui` 视觉、无新图片与新依赖），加入三语 i18n 文案并把 `.product-grid` 改为 3 列（1100px 中间断点降为 2 列再小堆叠），CTA 指向 `https://wen001-git.github.io/ForeclosureRule2/`；同步把硬约束子域名单扩展、把"为 FCL 申请三级子域名"加入 TODO、变更记录追加；why：用户要求把这款房贷止赎数据血缘工具纳入产品组合首页可被直接看到与体验 |
 | 2026-07-24 | 将单文件首页迁移为 Astro 7 + TypeScript 静态工程，抽出导航与页脚组件、整理公开图片并验证 `dist/` 构建；why：进入正式多页面和三语内容开发阶段，并支持 Render 标准静态部署 |
 | 2026-07-24 | 更新“我在找什么”的三语文案，强调寻找真实问题并结合经验、业务理解与 AI 创造价值；why：同步用户最新自我介绍 |
 | 2026-07-24 | 删除首页宏大口号并记录“产品卡片直接开场”的硬约束；why：保持表达具体自然，避免口号抢占产品注意力 |

@@ -8,3 +8,7 @@ dist/
 
 # 原始简历包含不公开的个人信息，仅保留在本地。
 MyResume/*.docx
+
+# 本地备份目录（含改动前的 dist/、src/、AGENTS.md 快照）
+.backup-*/
+.playwright-mcp/

@@ -8,9 +8,9 @@ import SiteFooter from "../components/SiteFooter.astro";
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="白板录屏工具与诗词图谱的产品介绍和体验入口。">
+  <meta name="description" content="白板录屏工具、诗词图谱与房贷止赎数据血缘的产品介绍和体验入口。">
   <meta name="theme-color" content="#f7f3ea">
-  <title>LEEWEN · 白板录屏工具与诗词图谱</title>
+  <title>LEEWEN · 白板录屏工具、诗词图谱与房贷止赎数据血缘</title>
   <style is:global>
     :root {
       --paper: #f7f3ea;
@@ -245,8 +245,8 @@ import SiteFooter from "../components/SiteFooter.astro";
     .hero { padding-top: 40px; }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
     }
     .product-card {
       position: relative;
@@ -270,6 +270,7 @@ import SiteFooter from "../components/SiteFooter.astro";
       pointer-events: none;
     }
     .product-card.poetry::after { background: rgba(73, 107, 91, .10); }
+    .product-card.fcl::after { background: rgba(38, 59, 90, .10); }
     .product-visual {
       position: relative;
       min-height: 250px;
@@ -292,6 +293,10 @@ import SiteFooter from "../components/SiteFooter.astro";
     .poetry .product-label {
       color: var(--green);
       background: rgba(73, 107, 91, .11);
+    }
+    .fcl .product-label {
+      color: var(--navy);
+      background: rgba(38, 59, 90, .11);
     }
     .product-content h2 {
       margin-bottom: 12px;
@@ -443,6 +448,59 @@ import SiteFooter from "../components/SiteFooter.astro";
     .node-b { top: 14%; right: 15%; background: var(--green); }
     .node-c { bottom: 12%; left: 18%; background: var(--navy-soft); }
     .node-d { right: 14%; bottom: 11%; background: #8b674e; }
+
+    /* FCL Pipeline Explorer — 数据血缘 / 多层 Pipeline 视觉 */
+    .lineage-ui {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(38, 59, 90, .12), transparent 40%),
+        linear-gradient(160deg, #e9ecf2, #dfe3eb);
+    }
+    .lineage-edge {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(to right, rgba(38, 59, 90, .45), rgba(38, 59, 90, .15));
+      transform-origin: left center;
+    }
+    .lineage-edge.edge-1 { top: 38%; left: 22%; width: 30%; transform: rotate(20deg); }
+    .lineage-edge.edge-2 { top: 38%; left: 52%; width: 30%; transform: rotate(-20deg); }
+    .lineage-edge.edge-3 { top: 56%; left: 30%; width: 22%; transform: rotate(35deg); }
+    .lineage-edge.edge-4 { top: 56%; left: 52%; width: 22%; transform: rotate(-35deg); }
+    .lineage-edge.edge-5 { top: 47%; left: 26%; width: 48%; transform: rotate(0deg); }
+    .lineage-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 60px;
+      aspect-ratio: 1;
+      border: 2px solid rgba(255, 255, 255, .92);
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy);
+      box-shadow: 0 8px 20px rgba(38, 59, 90, .22);
+      font-size: .72rem;
+      font-weight: 850;
+      text-align: center;
+      line-height: 1.1;
+      padding: 4px;
+    }
+    .lineage-node.node-source-a { top: 24%; left: 14%; background: var(--orange); width: 70px; }
+    .lineage-node.node-source-b { top: 24%; right: 14%; background: var(--navy-soft); width: 70px; }
+    .lineage-node.node-app { top: 50%; left: calc(50% - 42px); width: 84px; background: var(--navy); }
+    .lineage-node.node-report { bottom: 12%; left: calc(50% - 32px); background: var(--green); width: 64px; }
+    .lineage-pill {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 4px 9px;
+      border-radius: 99px;
+      color: var(--navy);
+      background: rgba(255, 255, 255, .82);
+      font-size: .7rem;
+      font-weight: 850;
+      letter-spacing: .04em;
+    }
 
     .scenario-grid,
     .steps-grid,
@@ -654,6 +712,10 @@ import SiteFooter from "../components/SiteFooter.astro";
       border: 0;
     }
 
+    @media (max-width: 1100px) {
+      .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 900px) {
       .nav-panel { gap: 10px; }
       .nav-links { display: none; }
@@ -774,6 +836,33 @@ import SiteFooter from "../components/SiteFooter.astro";
             </div>
           </div>
         </article>
+
+        <article class="product-card fcl">
+          <div class="product-visual" aria-hidden="true">
+            <div class="lineage-ui">
+              <span class="lineage-pill" data-i18n="lineagePill">Layer 0 → 5</span>
+              <i class="lineage-edge edge-1"></i>
+              <i class="lineage-edge edge-2"></i>
+              <i class="lineage-edge edge-3"></i>
+              <i class="lineage-edge edge-4"></i>
+              <i class="lineage-edge edge-5"></i>
+              <span class="lineage-node node-source-a" data-i18n="nodeSourceA">源 A</span>
+              <span class="lineage-node node-source-b" data-i18n="nodeSourceB">源 B</span>
+              <span class="lineage-node node-app" data-i18n="nodeApp">应用层</span>
+              <span class="lineage-node node-report" data-i18n="nodeReport">报表</span>
+            </div>
+          </div>
+          <div class="product-content">
+            <span class="product-label" data-i18n="productData">数据产品</span>
+            <h2 data-i18n="fclTitle">房贷止赎数据血缘</h2>
+            <p data-i18n="fclDesc">逆向分析房贷止赎数据处理系统，还原从原始文件到报表的完整数据血缘。</p>
+            <div class="audience" data-i18n="fclAudience">适合银行数据团队、监管科技工程师、产品经理与技术审阅者</div>
+            <div class="card-actions">
+              <a class="button button-primary" href="https://wen001-git.github.io/ForeclosureRule2/" target="_blank" rel="noopener" data-i18n="fclCta">立即查看</a>
+              <a class="button button-secondary" href="#fcl-demo" data-i18n="learnMore">了解更多</a>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -794,6 +883,12 @@ import SiteFooter from "../components/SiteFooter.astro";
           <h3 data-i18n="scenarioPoemTitle">想看见诗词背后的关系？</h3>
           <p data-i18n="scenarioPoemDesc">沿着诗人、时代、地点与作品的连接，发现传统列表之外的阅读路径。</p>
           <a class="text-link" href="https://poem.leewen.work" target="_blank" rel="noopener" data-i18n="poemCta">立即探索</a>
+        </article>
+        <article class="scenario" id="fcl-demo">
+          <span class="scenario-number">03</span>
+          <h3 data-i18n="scenarioFclTitle">想看清复杂系统里数据从文件到报表的完整流向？</h3>
+          <p data-i18n="scenarioFclDesc">把分散在代码、数据库和配置里的处理逻辑反向梳理成可视血缘，便于审计与协作。</p>
+          <a class="text-link" href="https://wen001-git.github.io/ForeclosureRule2/" target="_blank" rel="noopener" data-i18n="fclCta">立即查看</a>
         </article>
       </div>
     </section>
@@ -876,9 +971,9 @@ import SiteFooter from "../components/SiteFooter.astro";
         </article>
         <article class="article-card">
           <span class="article-type" data-i18n="typeBuild">产品构建</span>
-          <h3 data-i18n="articleThreeTitle">从需求到可运行产品</h3>
-          <p data-i18n="articleThreeDesc">我如何把长期的产品与系统经验，转化为用户可以直接使用的独立工具。</p>
-          <a class="text-link" href="#creator" data-i18n="meetCreator">认识创作者</a>
+          <h3 data-i18n="articleThreeTitle">为什么把房贷止赎数据流程梳理成产品</h3>
+          <p data-i18n="articleThreeDesc">当数据血缘清晰可追溯，业务团队和技术团队可以更快定位数据来源、理解计算逻辑。</p>
+          <a class="text-link" href="https://wen001-git.github.io/ForeclosureRule2/" target="_blank" rel="noopener" data-i18n="tryProduct">先体验产品</a>
         </article>
       </div>
     </section>
@@ -912,8 +1007,8 @@ import SiteFooter from "../components/SiteFooter.astro";
     (() => {
       const translations = {
         "zh-CN": {
-          title: "LEEWEN · 白板录屏工具与诗词图谱",
-          description: "白板录屏工具与诗词图谱的产品介绍和体验入口。",
+          title: "LEEWEN · 白板录屏工具、诗词图谱与房贷止赎数据血缘",
+          description: "白板录屏工具、诗词图谱与房贷止赎数据血缘的产品介绍和体验入口。",
           languageChanged: "语言已切换为简体中文",
           skip: "跳到主要内容",
           menuLabel: "打开或关闭菜单",
@@ -931,6 +1026,18 @@ import SiteFooter from "../components/SiteFooter.astro";
           recordCta: "立即体验",
           learnMore: "了解更多",
           productCulture: "文化产品",
+          productData: "数据产品",
+          lineagePill: "Layer 0 → 5",
+          nodeSourceA: "源 A",
+          nodeSourceB: "源 B",
+          nodeApp: "应用层",
+          nodeReport: "报表",
+          fclTitle: "房贷止赎数据血缘",
+          fclDesc: "逆向分析房贷止赎数据处理系统，还原从原始文件到报表的完整数据血缘。",
+          fclAudience: "适合银行数据团队、监管科技工程师、产品经理与技术审阅者",
+          fclCta: "立即查看",
+          scenarioFclTitle: "想看清复杂系统里数据从文件到报表的完整流向？",
+          scenarioFclDesc: "把分散在代码、数据库和配置里的处理逻辑反向梳理成可视血缘，便于审计与协作。",
           poemTitle: "诗词图谱",
           poemDesc: "从人物、时间和作品关系中，重新发现中国诗词。",
           poemAudience: "适合诗词爱好者、教师、学生与文化创作者",
@@ -949,7 +1056,7 @@ import SiteFooter from "../components/SiteFooter.astro";
           stepsEyebrow: "简单开始",
           stepsTitle: "从打开产品到获得结果",
           stepOneTitle: "选择产品",
-          stepOneDesc: "根据你的任务，进入白板录屏工具或诗词图谱。",
+          stepOneDesc: "根据你的任务，进入白板录屏工具、诗词图谱或房贷止赎数据血缘。",
           stepTwoTitle: "直接体验",
           stepTwoDesc: "无需先阅读冗长介绍，进入产品后再探索适合你的功能。",
           stepThreeTitle: "告诉我反馈",
@@ -979,8 +1086,8 @@ import SiteFooter from "../components/SiteFooter.astro";
           articleOneDesc: "从准备内容、边讲边画，到检查录制结果的简单流程。",
           articleTwoTitle: "我为什么做诗词图谱",
           articleTwoDesc: "当诗人、时代和作品连接起来，诗词会呈现出怎样的新阅读方式？",
-          articleThreeTitle: "从需求到可运行产品",
-          articleThreeDesc: "我如何把长期的产品与系统经验，转化为用户可以直接使用的独立工具。",
+          articleThreeTitle: "为什么把房贷止赎数据流程梳理成产品",
+          articleThreeDesc: "当数据血缘清晰可追溯，业务团队和技术团队可以更快定位数据来源、理解计算逻辑。",
           tryProduct: "先体验产品",
           exploreProduct: "先探索产品",
           meetCreator: "认识创作者",
@@ -993,8 +1100,8 @@ import SiteFooter from "../components/SiteFooter.astro";
           qrNote: "添加时请备注：产品名称 / 合作"
         },
         "zh-Hant": {
-          title: "LEEWEN · 白板錄屏工具與詩詞圖譜",
-          description: "白板錄屏工具與詩詞圖譜的產品介紹和體驗入口。",
+          title: "LEEWEN · 白板錄屏工具、詩詞圖譜與房貸止贖資料血緣",
+          description: "白板錄屏工具、詩詞圖譜與房貸止贖資料血緣的產品介紹和體驗入口。",
           languageChanged: "語言已切換為繁體中文",
           skip: "跳到主要內容",
           menuLabel: "開啟或關閉選單",
@@ -1012,6 +1119,18 @@ import SiteFooter from "../components/SiteFooter.astro";
           recordCta: "立即體驗",
           learnMore: "了解更多",
           productCulture: "文化產品",
+          productData: "數據產品",
+          lineagePill: "Layer 0 → 5",
+          nodeSourceA: "源 A",
+          nodeSourceB: "源 B",
+          nodeApp: "應用層",
+          nodeReport: "報表",
+          fclTitle: "房貸止贖資料血緣",
+          fclDesc: "逆向分析房貸止贖資料處理系統，還原從原始檔案到報表的完整資料血緣。",
+          fclAudience: "適合銀行資料團隊、監管科技工程師、產品經理與技術審閱者",
+          fclCta: "立即查看",
+          scenarioFclTitle: "想看清複雜系統裡資料從檔案到報表的完整流向？",
+          scenarioFclDesc: "把分散在程式碼、資料庫和設定檔裡的處理邏輯反向梳理成可視血緣，便於稽核與協作。",
           poemTitle: "詩詞圖譜",
           poemDesc: "從人物、時間和作品關係中，重新發現中國詩詞。",
           poemAudience: "適合詩詞愛好者、教師、學生與文化創作者",
@@ -1030,7 +1149,7 @@ import SiteFooter from "../components/SiteFooter.astro";
           stepsEyebrow: "簡單開始",
           stepsTitle: "從打開產品到獲得結果",
           stepOneTitle: "選擇產品",
-          stepOneDesc: "根據你的任務，進入白板錄屏工具或詩詞圖譜。",
+          stepOneDesc: "根據你的任務，進入白板錄屏工具、詩詞圖譜或房貸止贖資料血緣。",
           stepTwoTitle: "直接體驗",
           stepTwoDesc: "無需先閱讀冗長介紹，進入產品後再探索適合你的功能。",
           stepThreeTitle: "告訴我回饋",
@@ -1060,8 +1179,8 @@ import SiteFooter from "../components/SiteFooter.astro";
           articleOneDesc: "從準備內容、邊講邊畫，到檢查錄製結果的簡單流程。",
           articleTwoTitle: "我為什麼做詩詞圖譜",
           articleTwoDesc: "當詩人、時代和作品連結起來，詩詞會呈現出怎樣的新閱讀方式？",
-          articleThreeTitle: "從需求到可運行產品",
-          articleThreeDesc: "我如何把長期的產品與系統經驗，轉化為使用者可以直接使用的獨立工具。",
+          articleThreeTitle: "為什麼把房貸止贖資料流程梳理成產品",
+          articleThreeDesc: "當資料血緣清晰可追溯，業務團隊和技術團隊可以更快定位資料來源、理解計算邏輯。",
           tryProduct: "先體驗產品",
           exploreProduct: "先探索產品",
           meetCreator: "認識創作者",
@@ -1074,8 +1193,8 @@ import SiteFooter from "../components/SiteFooter.astro";
           qrNote: "添加時請備註：產品名稱 / 合作"
         },
         "en": {
-          title: "LEEWEN · Whiteboard Recorder and Poetry Graph",
-          description: "Product information and direct access to Whiteboard Recorder and Poetry Graph.",
+          title: "LEEWEN · Whiteboard Recorder, Poetry Graph and Foreclosure Data Lineage",
+          description: "Product information and direct access to Whiteboard Recorder, Poetry Graph, and Foreclosure Data Lineage.",
           languageChanged: "Language changed to English",
           skip: "Skip to main content",
           menuLabel: "Open or close menu",
@@ -1093,6 +1212,18 @@ import SiteFooter from "../components/SiteFooter.astro";
           recordCta: "Try it now",
           learnMore: "Learn more",
           productCulture: "Culture product",
+          productData: "Data product",
+          lineagePill: "Layer 0 → 5",
+          nodeSourceA: "Source A",
+          nodeSourceB: "Source B",
+          nodeApp: "BPS layer",
+          nodeReport: "Reporting",
+          fclTitle: "Mortgage Foreclosure Lineage",
+          fclDesc: "Reverse-engineered mortgage foreclosure pipelines—tracing data from servicer files to reporting layer.",
+          fclAudience: "For banking data teams, regtech engineers, product managers, and technical reviewers",
+          fclCta: "Try it now",
+          scenarioFclTitle: "Need to see how data flows from raw files to reports in a complex system?",
+          scenarioFclDesc: "Reverse-engineer scattered code, database, and config logic into a visual lineage so audits and collaboration get easier.",
           poemTitle: "Poetry Graph",
           poemDesc: "Rediscover Chinese poetry through the relationships between people, time, and works.",
           poemAudience: "For poetry lovers, teachers, students, and culture creators",
@@ -1111,7 +1242,7 @@ import SiteFooter from "../components/SiteFooter.astro";
           stepsEyebrow: "Start simply",
           stepsTitle: "From opening a product to getting a result",
           stepOneTitle: "Choose a product",
-          stepOneDesc: "Pick Whiteboard Recorder or Poetry Graph based on the task in front of you.",
+          stepOneDesc: "Pick Whiteboard Recorder, Poetry Graph, or Foreclosure Data Lineage based on the task in front of you.",
           stepTwoTitle: "Try it directly",
           stepTwoDesc: "Skip the long introduction. Enter the product and discover the features that matter to you.",
           stepThreeTitle: "Share feedback",
@@ -1141,8 +1272,8 @@ import SiteFooter from "../components/SiteFooter.astro";
           articleOneDesc: "A simple flow from preparing your idea and drawing while you speak to checking the final recording.",
           articleTwoTitle: "Why I built Poetry Graph",
           articleTwoDesc: "What new ways of reading appear when poets, eras, and works are connected?",
-          articleThreeTitle: "From requirements to working products",
-          articleThreeDesc: "How I turn long experience in products and systems into independent tools people can use directly.",
+          articleThreeTitle: "Why I turned foreclosure data lineage into a product",
+          articleThreeDesc: "When data lineage is clear and traceable, business and engineering teams locate data sources and reason about calculations much faster.",
           tryProduct: "Try the product",
           exploreProduct: "Explore the product",
           meetCreator: "Meet the creator",
