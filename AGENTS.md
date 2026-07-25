@@ -14,20 +14,16 @@
 
 ### 本地预览 `dist/`
 
-构建产物 `dist/` 里所有资源都用绝对根路径（`/_astro/...`、`/images/...`），双击 `dist/index.html` 在 `file://` 协议下会全部失效（找不到样式、图片和语言切换脚本）。预览构建结果请任选其一：
+`npm run build` 产物 `dist/` 里 **只有一个** `dist/index.html`，CSS / JS / 图片全部内联为 `<style>` / `<script type="module">` / `data:image/...;base64,...`。直接双击（macOS `open dist/index.html`）或拖入浏览器即可在 `file://` 协议下打开页面，无任何外部资源依赖。
 
-```bash
-# 方式 A：Python（最简，0 依赖）
-cd dist && python3 -m http.server 8000   # 浏览器打开 http://localhost:8000/
+- 本地预览：直接双击 `dist/index.html`。
+- 单文件分发：发这一个 `dist/index.html` 即可（约 1.3 MB）。
+- Render 部署：继续发布 `dist/`，里面只剩 `index.html`。
+- 热重载开发：`npm run dev`（默认 http://localhost:4321/）。
 
-# 方式 B：Node 静态服务
-npx --yes serve dist -l 8000
-
-# 方式 C：Astro 自带
-npm run build && npm run preview
-```
-
-调试样式 / 文案时直接 `npm run dev`（默认 http://localhost:4321/）。
+> ⚠️ 当前方案假设 `dist/` 只含一个首页。当 `/zh-hant/`、`/en/` 等子路径页面落地时，
+> `scripts/inline.mjs` 需要扩展为遍历所有 `dist/**/*.html` 分别内联；并且 Astro 多页 +
+> `base: "./"` 在子路径下的兼容性也要重新评估。
 
 ## 硬约束
 
@@ -35,7 +31,6 @@ npm run build && npm run preview
 - 站点构建结果必须是纯静态文件，不依赖自建后端、数据库或登录系统。
 - 技术架构固定为 Astro + TypeScript + Markdown Content Collections + 原生 CSS，通过 GitHub Actions 构建并发布到 GitHub Pages。
 - 网站必须支持简体中文、繁体中文、英文；核心页面三语齐全，根路径及其子路径提供简体中文，繁体与英文分别使用 `/zh-hant/`、`/en/`。
-- 构建产物 `dist/index.html` 使用绝对根路径，不要双击本地 HTML 文件预览，必须用静态服务器或 `npm run preview`、`npm run dev` 打开。
 - 首页必须产品优先：白板录屏工具与诗词图谱同等级占据首屏或紧邻首屏，并可一次点击进入对应子域名；个人介绍只作为产品信任背书。
 - 首页不使用宏大品牌口号或大幅介绍标题；导航下方直接展示产品卡片，由具体产品名称、用途和按钮承担说明。
 - 产品子域名：`record.leewen.work`、`poem.leewen.work`。
@@ -93,12 +88,13 @@ npm run build && npm run preview
 - 主站 DNS 配置不得覆盖 `record.leewen.work` 与 `poem.leewen.work`。
 - GitHub SSH 远端为 `git@github.com:wen001-git/MyWeb2.git`，主分支为 `main`。
 - 原始 DOCX 简历包含不公开信息，已通过 `.gitignore` 排除；只能提交脱敏后的公开版本。
+- `scripts/inline.mjs` 当前只处理 `dist/index.html`；多语言子路径落地时需先重构为多页 inline 处理函数再考虑是否保留此架构。
 
 ## 变更记录
 
 | 日期 | 变更内容 |
 |------|----------|
-| 2026-07-25 | 在「运行与测试」新增「本地预览 `dist/`」段落并加入硬约束「禁止双击 HTML」；why：Astro 静态构建使用绝对根路径，双击 `dist/index.html` 在 `file://` 下会全部失效，给出 python http.server / npx serve / `npm run preview` 三种本地预览方案，避免后续协作者重复踩坑 |
+| 2026-07-25 | post-build 把 `dist/index.html` 内联成 single-file（CSS/JS/图片→`<style>` / `<script type="module">` / `data:image/...;base64,...`），构建脚本改为 `astro build && node scripts/inline.mjs`，构建完 `dist/` 只剩一个约 1.3 MB 的 `index.html`，可双击亦可单独分发；同步删除了昨日误加的「禁止双击 HTML」硬约束、加入多语言页面落地时的重构提醒；why：用户希望 `dist/index.html` 自身就是可直接打开与分发的单一文件，避免任何额外打包或服务步骤 |
 | 2026-07-24 | 将单文件首页迁移为 Astro 7 + TypeScript 静态工程，抽出导航与页脚组件、整理公开图片并验证 `dist/` 构建；why：进入正式多页面和三语内容开发阶段，并支持 Render 标准静态部署 |
 | 2026-07-24 | 更新“我在找什么”的三语文案，强调寻找真实问题并结合经验、业务理解与 AI 创造价值；why：同步用户最新自我介绍 |
 | 2026-07-24 | 删除首页宏大口号并记录“产品卡片直接开场”的硬约束；why：保持表达具体自然，避免口号抢占产品注意力 |
