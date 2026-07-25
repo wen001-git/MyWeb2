@@ -12,12 +12,30 @@
 - Render 部署使用构建命令 `npm install && npm run build`，发布目录为 `dist`。
 - 按修改风险测试：文案和纯样式改动以目标 diff/静态检查为主；导航、文章生成、表单、购买入口等关键流程运行直接相关的最小测试。
 
+### 本地预览 `dist/`
+
+构建产物 `dist/` 里所有资源都用绝对根路径（`/_astro/...`、`/images/...`），双击 `dist/index.html` 在 `file://` 协议下会全部失效（找不到样式、图片和语言切换脚本）。预览构建结果请任选其一：
+
+```bash
+# 方式 A：Python（最简，0 依赖）
+cd dist && python3 -m http.server 8000   # 浏览器打开 http://localhost:8000/
+
+# 方式 B：Node 静态服务
+npx --yes serve dist -l 8000
+
+# 方式 C：Astro 自带
+npm run build && npm run preview
+```
+
+调试样式 / 文案时直接 `npm run dev`（默认 http://localhost:4321/）。
+
 ## 硬约束
 
 - 主域名：`leewen.work`。
 - 站点构建结果必须是纯静态文件，不依赖自建后端、数据库或登录系统。
 - 技术架构固定为 Astro + TypeScript + Markdown Content Collections + 原生 CSS，通过 GitHub Actions 构建并发布到 GitHub Pages。
 - 网站必须支持简体中文、繁体中文、英文；核心页面三语齐全，根路径及其子路径提供简体中文，繁体与英文分别使用 `/zh-hant/`、`/en/`。
+- 构建产物 `dist/index.html` 使用绝对根路径，不要双击本地 HTML 文件预览，必须用静态服务器或 `npm run preview`、`npm run dev` 打开。
 - 首页必须产品优先：白板录屏工具与诗词图谱同等级占据首屏或紧邻首屏，并可一次点击进入对应子域名；个人介绍只作为产品信任背书。
 - 首页不使用宏大品牌口号或大幅介绍标题；导航下方直接展示产品卡片，由具体产品名称、用途和按钮承担说明。
 - 产品子域名：`record.leewen.work`、`poem.leewen.work`。
@@ -80,6 +98,7 @@
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-07-25 | 在「运行与测试」新增「本地预览 `dist/`」段落并加入硬约束「禁止双击 HTML」；why：Astro 静态构建使用绝对根路径，双击 `dist/index.html` 在 `file://` 下会全部失效，给出 python http.server / npx serve / `npm run preview` 三种本地预览方案，避免后续协作者重复踩坑 |
 | 2026-07-24 | 将单文件首页迁移为 Astro 7 + TypeScript 静态工程，抽出导航与页脚组件、整理公开图片并验证 `dist/` 构建；why：进入正式多页面和三语内容开发阶段，并支持 Render 标准静态部署 |
 | 2026-07-24 | 更新“我在找什么”的三语文案，强调寻找真实问题并结合经验、业务理解与 AI 创造价值；why：同步用户最新自我介绍 |
 | 2026-07-24 | 删除首页宏大口号并记录“产品卡片直接开场”的硬约束；why：保持表达具体自然，避免口号抢占产品注意力 |
