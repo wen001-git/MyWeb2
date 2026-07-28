@@ -1,0 +1,141 @@
+<div class="mascot-companion" id="mascot-companion" aria-hidden="true">
+  <button
+    class="mascot-button"
+    id="mascot-button"
+    type="button"
+    aria-describedby="mascot-help"
+    data-i18n-aria="mascotAction"
+  >
+    <img class="mascot-frame" src="/images/mascot/default.webp" alt="" aria-hidden="true" draggable="false">
+    <img class="mascot-frame" src="/images/mascot/playful.webp" alt="" aria-hidden="true" draggable="false" hidden>
+    <img class="mascot-frame" src="/images/mascot/gold.webp" alt="" aria-hidden="true" draggable="false" hidden>
+    <img class="mascot-frame" src="/images/mascot/victory.webp" alt="" aria-hidden="true" draggable="false" hidden>
+    <img class="mascot-frame" src="/images/mascot/rain.webp" alt="" aria-hidden="true" draggable="false" hidden>
+  </button>
+  <span class="sr-only" id="mascot-help" data-i18n="mascotHelp">
+    点击查看随机表情，也可以拖动她的位置。
+  </span>
+  <span class="sr-only" id="mascot-status" aria-live="polite"></span>
+</div>
+
+<style>
+  .mascot-companion {
+    position: fixed;
+    z-index: 90;
+    top: 104px;
+    left: 12px;
+    height: var(--mascot-height, clamp(180px, 22vh, 240px));
+    aspect-ratio: 2 / 3;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease, visibility 180ms ease;
+    will-change: top, left;
+  }
+
+  .mascot-companion[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mascot-button {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: none;
+    color: inherit;
+    background: transparent;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    filter: drop-shadow(0 12px 18px rgba(38, 59, 90, .20));
+    transition: opacity 160ms ease, transform 160ms ease, filter 160ms ease;
+    transform-origin: center bottom;
+  }
+
+  .mascot-button:active,
+  .mascot-companion.is-dragging .mascot-button {
+    cursor: grabbing;
+  }
+
+  .mascot-button:focus-visible {
+    filter:
+      drop-shadow(0 0 5px rgba(199, 101, 61, .72))
+      drop-shadow(0 12px 18px rgba(38, 59, 90, .20));
+  }
+
+  .mascot-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  .mascot-frame[hidden] {
+    display: none;
+  }
+
+  .mascot-companion.is-avoiding:not(.is-dragging):not(:hover) .mascot-button {
+    opacity: .38;
+    transform: scale(.76);
+    filter: drop-shadow(0 7px 12px rgba(38, 59, 90, .12));
+  }
+
+  .mascot-button.is-reacting {
+    animation: mascot-pop 440ms cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .mascot-button.is-reacting::after {
+    position: absolute;
+    top: 8%;
+    right: -8%;
+    color: #e6a425;
+    content: "✦";
+    font-size: clamp(1.1rem, 2vw, 1.8rem);
+    text-shadow:
+      -26px 20px 0 rgba(230, 164, 37, .72),
+      -12px -18px 0 rgba(230, 164, 37, .48);
+    animation: mascot-sparkle 620ms ease-out both;
+    pointer-events: none;
+  }
+
+  @keyframes mascot-pop {
+    0%, 100% { transform: translateY(0) scale(1); }
+    42% { transform: translateY(-10px) scale(1.04); }
+    72% { transform: translateY(2px) scale(.99); }
+  }
+
+  @keyframes mascot-sparkle {
+    0% { opacity: 0; transform: scale(.35) rotate(-18deg); }
+    35% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.35) rotate(18deg); }
+  }
+
+  @media (max-width: 720px) {
+    .mascot-companion {
+      height: var(--mascot-height, clamp(120px, 18vh, 150px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mascot-companion,
+    .mascot-button {
+      transition: none;
+    }
+
+    .mascot-button.is-reacting,
+    .mascot-button.is-reacting::after {
+      animation: none;
+    }
+
+    .mascot-button.is-reacting::after {
+      display: none;
+    }
+  }
+</style>

@@ -53,6 +53,7 @@
 - [x] 已将单文件首页迁移到 Astro + TypeScript 工程，抽出导航和页脚组件，并保留原有三语切换。
 - [x] 已将公开画像与微信二维码迁入 `public/images/`，构建产物可直接部署。
 - [x] 首页 hero/scenarios/articles 三处各新增 FCL Pipeline Explorer 卡片，三语切换完整覆盖。
+- [x] 首页已加入左侧可拖动陪伴角色：五种透明表情、产品区域跟随、双端位置记忆、控件避让和三语无障碍均已接入。
 - [ ] 尚未实现产品、文章、关于我、合作及 404 等独立页面。
 - [x] 工作邮箱已确定为 `8639210@qq.com`。
 - [ ] 尚未确定产品价格/购买方式、首批正式文章内容。
@@ -71,6 +72,7 @@
 ## 文件地图
 
 - `src/pages/index.astro`：由原型迁移而来的三语产品优先首页，保留原有 CSS 设计变量与少量交互脚本；现已包含白板录屏工具、诗词图谱、房贷止赎数据血缘三款产品的首屏并列卡片与对应 scenarios/articles 区块。
+- `src/components/MascotCompanion.astro`、`public/images/mascot/`：首页陪伴角色的无边框交互层与五张透明 WebP 表情素材。
 - `src/components/SiteHeader.astro`、`src/components/SiteFooter.astro`：首页公共导航与页脚组件。
 - `public/images/`：可公开部署的彩铅肖像与微信二维码。
 - `astro.config.mjs`、`package.json`、`tsconfig.json`：Astro 静态构建、依赖脚本和 TypeScript 配置。
@@ -91,11 +93,13 @@
 - GitHub SSH 远端为 `git@github.com:wen001-git/MyWeb2.git`，主分支为 `main`。
 - 原始 DOCX 简历包含不公开信息，已通过 `.gitignore` 排除；只能提交脱敏后的公开版本。
 - `scripts/inline.mjs` 当前只处理 `dist/index.html`；多语言子路径落地时需先重构为多页 inline 处理函数再考虑是否保留此架构。
+- 陪伴角色仅在产品首屏、使用场景与开始步骤区域跟随视口；进入创作者区域即隐藏，拖动位置按桌面/移动端分别保存在 localStorage。
 
 ## 变更记录
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-07-29 | 新增首页左侧可拖动陪伴角色，接入五种透明表情、区域跟随、双端位置记忆、控件避让、三语无障碍和无边框焦点样式；why：增加个人化创意，同时保护产品按钮与后续阅读区域 |
 | 2026-07-25 | post-build 把 `dist/index.html` 内联成 single-file（CSS/JS/图片→`<style>` / `<script type="module">` / `data:image/...;base64,...`），构建脚本改为 `astro build && node scripts/inline.mjs`，构建完 `dist/` 只剩一个约 1.3 MB 的 `index.html`，可双击亦可单独分发；同步删除了昨日误加的「禁止双击 HTML」硬约束、加入多语言页面落地时的重构提醒；why：用户希望 `dist/index.html` 自身就是可直接打开与分发的单一文件，避免任何额外打包或服务步骤 |
 | 2026-07-25 | 首页 hero / scenarios / articles 三处各新增 FCL Pipeline Explorer 卡片（CSS-only `.lineage-ui` 视觉、无新图片与新依赖），加入三语 i18n 文案并把 `.product-grid` 改为 3 列（1100px 中间断点降为 2 列再小堆叠），CTA 指向 `https://wen001-git.github.io/ForeclosureRule2/`；同步把硬约束子域名单扩展、把"为 FCL 申请三级子域名"加入 TODO、变更记录追加；why：用户要求把这款房贷止赎数据血缘工具纳入产品组合首页可被直接看到与体验 |
 | 2026-07-24 | 将单文件首页迁移为 Astro 7 + TypeScript 静态工程，抽出导航与页脚组件、整理公开图片并验证 `dist/` 构建；why：进入正式多页面和三语内容开发阶段，并支持 Render 标准静态部署 |

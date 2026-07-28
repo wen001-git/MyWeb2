@@ -1,6 +1,7 @@
 ---
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import MascotCompanion from "../components/MascotCompanion.astro";
 ---
 
 <!doctype html>
@@ -786,6 +787,7 @@ import SiteFooter from "../components/SiteFooter.astro";
   <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
 
   <SiteHeader />
+  <MascotCompanion />
 
   <main id="main">
     <section class="section hero" id="products">
@@ -1003,7 +1005,7 @@ import SiteFooter from "../components/SiteFooter.astro";
 
   <p class="sr-only" id="language-status" aria-live="polite"></p>
 
-  <script>
+  <script is:inline>
     (() => {
       const translations = {
         "zh-CN": {
@@ -1012,6 +1014,12 @@ import SiteFooter from "../components/SiteFooter.astro";
           languageChanged: "语言已切换为简体中文",
           skip: "跳到主要内容",
           menuLabel: "打开或关闭菜单",
+          mascotAction: "点击查看随机表情，或拖动陪伴角色",
+          mascotHelp: "点击查看随机表情，也可以拖动她的位置。",
+          mascotPlayfulStatus: "她做了一个俏皮的鬼脸。",
+          mascotGoldStatus: "她变出了一块闪闪发光的金砖。",
+          mascotVictoryStatus: "她开心地比了一个胜利手势。",
+          mascotRainStatus: "一小片雨云飘到了她的头顶。",
           navProducts: "产品",
           navScenarios: "使用场景",
           navCreator: "创作者",
@@ -1105,6 +1113,12 @@ import SiteFooter from "../components/SiteFooter.astro";
           languageChanged: "語言已切換為繁體中文",
           skip: "跳到主要內容",
           menuLabel: "開啟或關閉選單",
+          mascotAction: "點擊查看隨機表情，或拖動陪伴角色",
+          mascotHelp: "點擊查看隨機表情，也可以拖動她的位置。",
+          mascotPlayfulStatus: "她做了一個俏皮的鬼臉。",
+          mascotGoldStatus: "她變出了一塊閃閃發光的金磚。",
+          mascotVictoryStatus: "她開心地比了一個勝利手勢。",
+          mascotRainStatus: "一小片雨雲飄到了她的頭頂。",
           navProducts: "產品",
           navScenarios: "使用場景",
           navCreator: "創作者",
@@ -1198,6 +1212,12 @@ import SiteFooter from "../components/SiteFooter.astro";
           languageChanged: "Language changed to English",
           skip: "Skip to main content",
           menuLabel: "Open or close menu",
+          mascotAction: "Show a random expression or drag the companion",
+          mascotHelp: "Click for a random expression, or drag her to a new position.",
+          mascotPlayfulStatus: "She makes a playful face.",
+          mascotGoldStatus: "She conjures a shining gold bar.",
+          mascotVictoryStatus: "She flashes a cheerful victory sign.",
+          mascotRainStatus: "A tiny rain cloud appears above her.",
           navProducts: "Products",
           navScenarios: "Use cases",
           navCreator: "Creator",
@@ -1292,6 +1312,35 @@ import SiteFooter from "../components/SiteFooter.astro";
       const menuToggle = document.querySelector(".menu-toggle");
       const navPanel = document.getElementById("nav-panel");
       const description = document.querySelector('meta[name="description"]');
+      const mascot = document.getElementById("mascot-companion");
+      const mascotButton = document.getElementById("mascot-button");
+      const mascotFrames = [...mascot.querySelectorAll(".mascot-frame")];
+      const mascotStatus = document.getElementById("mascot-status");
+      const productsSection = document.getElementById("products");
+      const creatorSection = document.getElementById("creator");
+      const siteHeader = document.querySelector(".site-header");
+      const mascotControls = [
+        siteHeader,
+        ...document.querySelectorAll(".button, .menu-toggle, .lang-switch")
+      ].filter(Boolean);
+      const mascotReactionKeys = [
+        "",
+        "mascotPlayfulStatus",
+        "mascotGoldStatus",
+        "mascotVictoryStatus",
+        "mascotRainStatus"
+      ];
+      const mascotPositionKeys = {
+        desktop: "leewen-mascot-position-desktop",
+        mobile: "leewen-mascot-position-mobile"
+      };
+      const mascotMobileQuery = window.matchMedia("(max-width: 720px)");
+      let mascotActiveFrame = 0;
+      let mascotResetTimer = 0;
+      let mascotPointer = null;
+      let mascotSuppressClick = false;
+      let mascotLayoutFrame = 0;
+      let mascotMode = mascotMobileQuery.matches ? "mobile" : "desktop";
 
       function setLanguage(lang, announce = true) {
         const copy = translations[lang] || translations["zh-CN"];
@@ -1323,7 +1372,209 @@ import SiteFooter from "../components/SiteFooter.astro";
       function closeMenu() {
         navPanel.dataset.open = "false";
         menuToggle.setAttribute("aria-expanded", "false");
+        scheduleMascotLayout();
       }
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), Math.max(min, max));
+      }
+
+      function mascotStorageKey() {
+        return mascotPositionKeys[mascotMode];
+      }
+
+      function setMascotPosition(left, top) {
+        const maxLeft = window.innerWidth - mascot.offsetWidth - 8;
+        const maxTop = window.innerHeight - mascot.offsetHeight - 8;
+        mascot.style.left = `${Math.round(clamp(left, 8, maxLeft))}px`;
+        mascot.style.top = `${Math.round(clamp(top, 8, maxTop))}px`;
+      }
+
+      function saveMascotPosition() {
+        const rect = mascot.getBoundingClientRect();
+        const availableX = Math.max(1, window.innerWidth - rect.width);
+        const availableY = Math.max(1, window.innerHeight - rect.height);
+        const saved = {
+          x: clamp(rect.left / availableX, 0, 1),
+          y: clamp(rect.top / availableY, 0, 1)
+        };
+        try {
+          localStorage.setItem(mascotStorageKey(), JSON.stringify(saved));
+        } catch (_) {}
+      }
+
+      function loadMascotPosition() {
+        try {
+          const raw = localStorage.getItem(mascotStorageKey());
+          if (!raw) return false;
+          const saved = JSON.parse(raw);
+          if (!Number.isFinite(saved.x) || !Number.isFinite(saved.y)) return false;
+          const availableX = Math.max(0, window.innerWidth - mascot.offsetWidth);
+          const availableY = Math.max(0, window.innerHeight - mascot.offsetHeight);
+          setMascotPosition(saved.x * availableX, saved.y * availableY);
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function sizeMascot() {
+        const productsRect = productsSection.getBoundingClientRect();
+        let height;
+        if (mascotMobileQuery.matches) {
+          height = clamp(window.innerHeight * .18, 120, 150);
+        } else {
+          const preferred = clamp(window.innerHeight * .22, 180, 240);
+          const heightThatFitsGutter = Math.max(0, (productsRect.left - 16) * 1.5);
+          height = Math.max(120, Math.min(preferred, heightThatFitsGutter));
+        }
+        mascot.style.setProperty("--mascot-height", `${Math.round(height)}px`);
+      }
+
+      function setDefaultMascotPosition() {
+        const productsRect = productsSection.getBoundingClientRect();
+        const headerBottom = siteHeader.getBoundingClientRect().bottom;
+        const left = Math.max(8, productsRect.left - mascot.offsetWidth - 14);
+        const top = Math.max(headerBottom + 18, productsRect.top + 28);
+        setMascotPosition(left, top);
+      }
+
+      function restoreMascotPosition() {
+        sizeMascot();
+        if (!loadMascotPosition()) setDefaultMascotPosition();
+      }
+
+      function rectanglesOverlap(first, second) {
+        return first.left < second.right - 6 &&
+          first.right > second.left + 6 &&
+          first.top < second.bottom - 6 &&
+          first.bottom > second.top + 6;
+      }
+
+      function updateMascotAvoidance() {
+        if (mascot.dataset.visible !== "true" || mascot.classList.contains("is-dragging")) {
+          mascot.classList.remove("is-avoiding");
+          return;
+        }
+        const mascotRect = mascotButton.getBoundingClientRect();
+        const overlapsControl = mascotControls.some((control) => {
+          const rect = control.getBoundingClientRect();
+          const isVisible = rect.width > 0 && rect.height > 0 &&
+            rect.bottom > 0 && rect.top < window.innerHeight;
+          return isVisible && rectanglesOverlap(mascotRect, rect);
+        });
+        mascot.classList.toggle("is-avoiding", overlapsControl);
+      }
+
+      function updateMascotVisibility() {
+        const productsTop = productsSection.getBoundingClientRect().top;
+        const creatorTop = creatorSection.getBoundingClientRect().top;
+        const visible = productsTop < window.innerHeight && creatorTop > window.innerHeight;
+        mascot.dataset.visible = String(visible);
+        mascot.setAttribute("aria-hidden", String(!visible));
+        mascotButton.tabIndex = visible ? 0 : -1;
+        if (!visible) mascot.classList.remove("is-avoiding");
+      }
+
+      function scheduleMascotLayout() {
+        if (mascotLayoutFrame) return;
+        mascotLayoutFrame = requestAnimationFrame(() => {
+          mascotLayoutFrame = 0;
+          updateMascotVisibility();
+          updateMascotAvoidance();
+        });
+      }
+
+      function showMascotFrame(index) {
+        mascotActiveFrame = index;
+        mascotFrames.forEach((frame, frameIndex) => {
+          frame.hidden = frameIndex !== index;
+        });
+      }
+
+      function showMascotReaction() {
+        const candidates = [1, 2, 3, 4].filter((index) => index !== mascotActiveFrame);
+        const nextIndex = candidates[Math.floor(Math.random() * candidates.length)];
+        showMascotFrame(nextIndex);
+
+        const copy = translations[document.documentElement.lang] || translations["zh-CN"];
+        mascotStatus.textContent = copy[mascotReactionKeys[nextIndex]];
+
+        mascotButton.classList.remove("is-reacting");
+        void mascotButton.offsetWidth;
+        mascotButton.classList.add("is-reacting");
+        window.setTimeout(() => mascotButton.classList.remove("is-reacting"), 700);
+
+        window.clearTimeout(mascotResetTimer);
+        mascotResetTimer = window.setTimeout(() => showMascotFrame(0), 3000);
+      }
+
+      function finishMascotPointer(event, cancelled = false) {
+        if (!mascotPointer || mascotPointer.id !== event.pointerId) return;
+        const moved = mascotPointer.moved;
+        mascotSuppressClick = true;
+        if (!cancelled && moved) saveMascotPosition();
+        if (!cancelled && !moved) showMascotReaction();
+        if (mascotButton.hasPointerCapture(event.pointerId)) {
+          mascotButton.releasePointerCapture(event.pointerId);
+        }
+        mascotPointer = null;
+        mascot.classList.remove("is-dragging");
+        updateMascotAvoidance();
+        window.setTimeout(() => { mascotSuppressClick = false; }, 0);
+      }
+
+      mascotButton.addEventListener("pointerdown", (event) => {
+        if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+        const rect = mascot.getBoundingClientRect();
+        mascotPointer = {
+          id: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          startLeft: rect.left,
+          startTop: rect.top,
+          moved: false
+        };
+        mascot.classList.add("is-dragging");
+        mascotButton.focus({ preventScroll: true });
+        mascotButton.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      });
+
+      mascotButton.addEventListener("pointermove", (event) => {
+        if (!mascotPointer || mascotPointer.id !== event.pointerId) return;
+        const deltaX = event.clientX - mascotPointer.startX;
+        const deltaY = event.clientY - mascotPointer.startY;
+        if (!mascotPointer.moved && Math.hypot(deltaX, deltaY) >= 6) {
+          mascotPointer.moved = true;
+        }
+        if (mascotPointer.moved) {
+          setMascotPosition(
+            mascotPointer.startLeft + deltaX,
+            mascotPointer.startTop + deltaY
+          );
+        }
+        event.preventDefault();
+      });
+
+      mascotButton.addEventListener("pointerup", (event) => {
+        finishMascotPointer(event);
+      });
+
+      mascotButton.addEventListener("pointercancel", (event) => {
+        finishMascotPointer(event, true);
+      });
+
+      mascotButton.addEventListener("click", () => {
+        if (!mascotSuppressClick) showMascotReaction();
+      });
+
+      window.addEventListener("scroll", scheduleMascotLayout, { passive: true });
+      window.addEventListener("resize", () => {
+        mascotMode = mascotMobileQuery.matches ? "mobile" : "desktop";
+        restoreMascotPosition();
+        scheduleMascotLayout();
+      }, { passive: true });
 
       languageButtons.forEach((button) => {
         button.addEventListener("click", () => {
@@ -1336,6 +1587,7 @@ import SiteFooter from "../components/SiteFooter.astro";
         const open = navPanel.dataset.open !== "true";
         navPanel.dataset.open = String(open);
         menuToggle.setAttribute("aria-expanded", String(open));
+        scheduleMascotLayout();
       });
 
       navPanel.querySelectorAll("a").forEach((link) => {
@@ -1352,6 +1604,8 @@ import SiteFooter from "../components/SiteFooter.astro";
         if (translations[saved]) initialLanguage = saved;
       } catch (_) {}
       setLanguage(initialLanguage, false);
+      restoreMascotPosition();
+      scheduleMascotLayout();
     })();
   </script>
 </body>
