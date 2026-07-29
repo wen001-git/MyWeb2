@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type Product = CollectionEntry<"products">["data"];
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const zh = product.locales.zhCN;
+const secondaryHref = product.detail?.enabled && product.detailAnchor
+  ? `#${product.detailAnchor}`
+  : product.category === "personal"
+    ? `#${product.productId}-scenario`
+    : undefined;
+---
+
+<article
+  class:list={["product-card", product.visual, product.category]}
+  data-product-id={product.productId}
+  data-locale-scope={JSON.stringify(product.locales)}
+>
+  <div class="product-visual" aria-hidden="true">
+    {product.visual === "whiteboard" && (
+      <div class="whiteboard-ui">
+        <div class="tool-rail"><i></i><i></i><i></i></div>
+        <div class="record-pill">REC</div>
+        <div class="board-note" data-i18n="boardNote">边讲 · 边画 · 边录</div>
+        <div class="board-arrow"></div>
+      </div>
+    )}
+    {product.visual === "poetry" && (
+      <div class="poetry-map">
+        <i class="map-line line-a"></i>
+        <i class="map-line line-b"></i>
+        <i class="map-line line-c"></i>
+        <i class="map-line line-d"></i>
+        <span class="map-node node-main" data-i18n="nodePoetry">诗词</span>
+        <span class="map-node node-a" data-i18n="nodePoet">诗人</span>
+        <span class="map-node node-b" data-i18n="nodeTime">时代</span>
+        <span class="map-node node-c" data-i18n="nodePlace">地点</span>
+        <span class="map-node node-d" data-i18n="nodeWork">作品</span>
+      </div>
+    )}
+    {product.visual === "lineage" && (
+      <div class="lineage-ui">
+        <span class="lineage-pill">Layer 0 → 5</span>
+        <i class="lineage-edge edge-1"></i>
+        <i class="lineage-edge edge-2"></i>
+        <i class="lineage-edge edge-3"></i>
+        <i class="lineage-edge edge-4"></i>
+        <i class="lineage-edge edge-5"></i>
+        <span class="lineage-node node-source-a" data-i18n="nodeSourceA">源 A</span>
+        <span class="lineage-node node-source-b" data-i18n="nodeSourceB">源 B</span>
+        <span class="lineage-node node-app" data-i18n="nodeApp">应用层</span>
+        <span class="lineage-node node-report" data-i18n="nodeReport">报表</span>
+      </div>
+    )}
+    {product.visual === "image" && product.coverImage && (
+      <img src={product.coverImage} alt="" loading="lazy">
+    )}
+    {product.visual === "generic" && (
+      <div class="generic-product-visual"><span>{zh.title}</span></div>
+    )}
+  </div>
+  <div class="product-content">
+    <span class="product-label" data-locale-field="label">{zh.label}</span>
+    <h2 data-locale-field="title">{zh.title}</h2>
+    <p data-locale-field="summary">{zh.summary}</p>
+    <div class="audience" data-locale-field="audience">{zh.audience}</div>
+    <div class="card-actions">
+      <a
+        class="button button-primary"
+        href={product.href}
+        target="_blank"
+        rel="noopener"
+        data-locale-field="primaryCta"
+      >{zh.primaryCta}</a>
+      {zh.secondaryCta && secondaryHref && (
+        <a
+          class="button button-secondary"
+          href={secondaryHref}
+          data-locale-field="secondaryCta"
+        >{zh.secondaryCta}</a>
+      )}
+    </div>
+  </div>
+</article>

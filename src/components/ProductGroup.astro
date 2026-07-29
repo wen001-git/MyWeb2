@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ProductCard from "./ProductCard.astro";
+
+type Product = CollectionEntry<"products">["data"];
+
+interface Props {
+  id: string;
+  className?: string;
+  eyebrowKey: string;
+  eyebrow: string;
+  titleKey?: string;
+  title?: string;
+  leadKey?: string;
+  lead?: string;
+  products: Product[];
+}
+
+const {
+  id,
+  className = "",
+  eyebrowKey,
+  eyebrow,
+  titleKey,
+  title,
+  leadKey,
+  lead,
+  products
+} = Astro.props;
+---
+
+<section class:list={["section", "product-group", className]} id={id}>
+  <div class:list={["product-group-heading", { compact: !title }]}>
+    <p class="eyebrow" data-i18n={eyebrowKey}>{eyebrow}</p>
+    {title && titleKey && <h2 data-i18n={titleKey}>{title}</h2>}
+    {lead && leadKey && <p class="lead" data-i18n={leadKey}>{lead}</p>}
+  </div>
+  <div class="product-grid">
+    {products.map((product) => <ProductCard product={product} />)}
+  </div>
+</section>

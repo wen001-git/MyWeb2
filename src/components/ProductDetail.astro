@@ -1,0 +1,85 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+type Product = CollectionEntry<"products">["data"];
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+if (!product.detail || !product.detailAnchor) {
+  throw new Error(`Product ${product.productId} has no homepage detail`);
+}
+const detail = product.detail;
+const zh = detail.locales.zhCN;
+---
+
+<section
+  class="section product-detail"
+  id={product.detailAnchor}
+  data-product-detail={product.productId}
+  data-locale-scope={JSON.stringify(detail.locales)}
+>
+  <div class="detail-shell">
+    <div class="detail-image">
+      <img
+        src={detail.image}
+        alt={zh.imageAlt}
+        loading="lazy"
+        data-locale-attr="alt:imageAlt"
+      >
+    </div>
+    <div class="detail-copy">
+      <p class="eyebrow" data-locale-field="eyebrow">{zh.eyebrow}</p>
+      <h2 data-locale-field="title">{zh.title}</h2>
+      <p class="lead" data-locale-field="lead">{zh.lead}</p>
+      <div class="detail-metrics">
+        {zh.metrics.map((metric, index) => (
+          <div class="detail-metric">
+            <strong data-locale-field={`metrics.${index}.value`}>{metric.value}</strong>
+            <span data-locale-field={`metrics.${index}.label`}>{metric.label}</span>
+          </div>
+        ))}
+      </div>
+      <h3 data-locale-field="rolesLabel">{zh.rolesLabel}</h3>
+      <ul class="detail-roles">
+        {zh.roles.map((role, index) => (
+          <li data-locale-field={`roles.${index}`}>{role}</li>
+        ))}
+      </ul>
+      <h3 data-locale-field="capabilitiesLabel">{zh.capabilitiesLabel}</h3>
+      <ul class="capability-list">
+        {zh.capabilities.map((capability, index) => (
+          <li data-locale-field={`capabilities.${index}`}>{capability}</li>
+        ))}
+      </ul>
+      <details class="module-details">
+        <summary data-locale-field="modulesSummary">{zh.modulesSummary}</summary>
+        <div>
+          <h3 data-locale-field="modulesTitle">{zh.modulesTitle}</h3>
+          <ul>
+            {zh.modules.map((module, index) => (
+              <li data-locale-field={`modules.${index}`}>{module}</li>
+            ))}
+          </ul>
+        </div>
+      </details>
+      <p class="demo-notice" data-locale-field="notice">{zh.notice}</p>
+      <div class="card-actions detail-actions">
+        <a
+          class="button button-primary"
+          href={product.href}
+          target="_blank"
+          rel="noopener"
+          data-locale-field="primaryCta"
+        >{zh.primaryCta}</a>
+        <a
+          class="button button-secondary"
+          href={detail.contactHref}
+          data-locale-field="secondaryCta"
+        >{zh.secondaryCta}</a>
+      </div>
+    </div>
+  </div>
+</section>

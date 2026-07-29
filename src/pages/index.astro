@@ -2,6 +2,16 @@
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import MascotCompanion from "../components/MascotCompanion.astro";
+import ProductGroup from "../components/ProductGroup.astro";
+import ProductDetail from "../components/ProductDetail.astro";
+import { getCollection } from "astro:content";
+
+const products = (await getCollection("products", ({ data }) => data.published))
+  .map(({ data }) => data)
+  .sort((a, b) => a.order - b.order);
+const personalProducts = products.filter((product) => product.category === "personal");
+const professionalProducts = products.filter((product) => product.category === "professional");
+const detailedProducts = products.filter((product) => product.detail?.enabled);
 ---
 
 <!doctype html>
@@ -9,9 +19,9 @@ import MascotCompanion from "../components/MascotCompanion.astro";
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="白板录屏工具、诗词图谱与房贷止赎数据血缘的产品介绍和体验入口。">
+  <meta name="description" content="白板录屏工具、诗词图谱，以及房贷止赎数据血缘与 ALM 经营分析报表等银行专业作品。">
   <meta name="theme-color" content="#f7f3ea">
-  <title>LEEWEN · 白板录屏工具、诗词图谱与房贷止赎数据血缘</title>
+  <title>LEEWEN · 个人产品与银行数据专业作品</title>
   <style is:global>
     :root {
       --paper: #f7f3ea;
@@ -244,15 +254,32 @@ import MascotCompanion from "../components/MascotCompanion.astro";
     }
 
     .hero { padding-top: 40px; }
+    .product-group-heading { margin-bottom: 34px; }
+    .product-group-heading.compact {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-left: 38px;
+      margin-bottom: 18px;
+    }
+    .product-group-heading.compact .eyebrow { margin: 0; }
+    .product-group-heading.compact::after {
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+      content: "";
+    }
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 22px;
     }
     .product-card {
       position: relative;
       min-width: 0;
       padding: 18px;
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       background: rgba(255, 253, 248, .92);
@@ -271,16 +298,22 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       pointer-events: none;
     }
     .product-card.poetry::after { background: rgba(73, 107, 91, .10); }
-    .product-card.fcl::after { background: rgba(38, 59, 90, .10); }
+    .product-card.lineage::after,
+    .product-card.image::after { background: rgba(38, 59, 90, .10); }
     .product-visual {
       position: relative;
-      min-height: 250px;
+      height: 250px;
       margin-bottom: 24px;
       border-radius: 20px;
       background: #f0ebe1;
       overflow: hidden;
     }
-    .product-content { padding: 0 10px 10px; }
+    .product-content {
+      flex: 1;
+      padding: 0 10px 10px;
+      display: flex;
+      flex-direction: column;
+    }
     .product-label {
       display: inline-flex;
       margin-bottom: 12px;
@@ -295,10 +328,12 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       color: var(--green);
       background: rgba(73, 107, 91, .11);
     }
-    .fcl .product-label {
+    .professional .product-label {
       color: var(--navy);
       background: rgba(38, 59, 90, .11);
     }
+    .professional .button-primary { background: var(--navy); }
+    .professional .button-primary:hover { background: var(--navy-soft); }
     .product-content h2 {
       margin-bottom: 12px;
       font-family: inherit;
@@ -320,6 +355,24 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      margin-top: auto;
+    }
+    .product-visual > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top left;
+    }
+    .generic-product-visual {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--navy);
+      background: linear-gradient(145deg, #edf0f5, #e0e6ee);
+      font: 800 1.2rem/1.4 "Songti SC", serif;
+      text-align: center;
     }
 
     .whiteboard-ui {
@@ -501,6 +554,111 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       font-size: .7rem;
       font-weight: 850;
       letter-spacing: .04em;
+    }
+
+    .professional-group {
+      margin-top: 24px;
+      padding: clamp(34px, 6vw, 68px);
+      border: 1px solid rgba(38, 59, 90, .14);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, rgba(38, 59, 90, .075), rgba(255, 253, 248, .88)),
+        var(--card);
+    }
+    .professional-group .product-group-heading { max-width: 850px; }
+
+    .product-detail { scroll-margin-top: 90px; }
+    .detail-shell {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: clamp(28px, 5vw, 58px);
+      align-items: start;
+      padding: clamp(22px, 4vw, 46px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .detail-image {
+      position: sticky;
+      top: 92px;
+      max-height: 720px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #f1f3f6;
+      overflow: auto;
+    }
+    .detail-image img { width: 100%; }
+    .detail-copy .lead { margin-bottom: 28px; }
+    .detail-copy h3 {
+      margin: 28px 0 12px;
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+    .detail-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .detail-metric {
+      padding: 16px 12px;
+      border-radius: 14px;
+      color: var(--navy);
+      background: rgba(38, 59, 90, .07);
+      text-align: center;
+    }
+    .detail-metric strong {
+      display: block;
+      font-size: 1.7rem;
+      line-height: 1.15;
+    }
+    .detail-metric span {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+    .detail-roles {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--muted);
+    }
+    .detail-roles li + li { margin-top: 8px; }
+    .capability-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .capability-list li {
+      padding: 7px 11px;
+      border: 1px solid rgba(38, 59, 90, .14);
+      border-radius: 99px;
+      color: var(--navy);
+      background: rgba(38, 59, 90, .045);
+      font-size: .84rem;
+      font-weight: 750;
+    }
+    .module-details {
+      margin-top: 26px;
+      border-block: 1px solid var(--line);
+    }
+    .module-details summary {
+      padding: 16px 2px;
+      color: var(--navy);
+      cursor: pointer;
+      font-weight: 850;
+    }
+    .module-details > div { padding: 0 2px 18px; }
+    .module-details h3 { margin-top: 4px; }
+    .module-details ul { margin-bottom: 0; padding-left: 1.25rem; color: var(--muted); }
+    .demo-notice {
+      margin: 22px 0;
+      padding: 14px 16px;
+      border-left: 3px solid var(--orange);
+      color: var(--muted);
+      background: rgba(199, 101, 61, .06);
+      font-size: .88rem;
     }
 
     .scenario-grid,
@@ -714,7 +872,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
     }
 
     @media (max-width: 1100px) {
-      .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .detail-shell { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
     }
 
     @media (max-width: 900px) {
@@ -722,9 +880,11 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       .nav-links { display: none; }
       .product-grid,
       .creator-card,
-      .contact-card { grid-template-columns: 1fr; }
+      .contact-card,
+      .detail-shell { grid-template-columns: 1fr; }
       .product-card { max-width: 720px; }
       .product-grid { justify-items: center; }
+      .detail-image { position: static; max-height: 560px; }
       .creator-card { gap: 30px; }
       .creator-copy { order: -1; }
       .portrait-frame { max-width: 320px; }
@@ -733,7 +893,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       .qr-card { max-width: 250px; }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 900px) {
       .nav-wrap { width: min(calc(100% - 28px), var(--max)); }
       .menu-toggle { display: inline-grid; place-items: center; }
       .nav-panel {
@@ -763,13 +923,17 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       .scenario-grid,
       .steps-grid { grid-template-columns: 1fr; }
       .product-card { padding: 12px; border-radius: 22px; }
-      .product-visual { min-height: 220px; }
+      .professional-group { padding: 34px 14px; border-radius: 22px; }
+      .product-group-heading.compact { padding-left: 28px; }
+      .product-visual { height: 220px; }
       .product-content { padding: 0 6px 8px; }
       .audience, .product-content p { min-height: 0; }
       .card-actions .button { width: 100%; }
       .map-node { width: 62px; font-size: .82rem; }
       .node-main { width: 76px; left: calc(50% - 38px); }
       .contact-card { gap: 30px; }
+      .detail-shell { padding: 14px; }
+      .detail-metrics { grid-template-columns: 1fr; }
       footer { width: min(calc(100% - 28px), var(--max)); flex-direction: column; }
     }
 
@@ -790,83 +954,13 @@ import MascotCompanion from "../components/MascotCompanion.astro";
   <MascotCompanion />
 
   <main id="main">
-    <section class="section hero" id="products">
-      <div class="product-grid">
-        <article class="product-card">
-          <div class="product-visual" aria-hidden="true">
-            <div class="whiteboard-ui">
-              <div class="tool-rail"><i></i><i></i><i></i></div>
-              <div class="record-pill">REC</div>
-              <div class="board-note" data-i18n="boardNote">边讲 · 边画 · 边录</div>
-              <div class="board-arrow"></div>
-            </div>
-          </div>
-          <div class="product-content">
-            <span class="product-label" data-i18n="productTool">创作工具</span>
-            <h2 data-i18n="recordTitle">白板录屏工具</h2>
-            <p data-i18n="recordDesc">一边讲解，一边把思路完整录下来。适合教学、产品演示和知识分享。</p>
-            <div class="audience" data-i18n="recordAudience">适合教师、培训者、产品经理与知识创作者</div>
-            <div class="card-actions">
-              <a class="button button-primary" href="https://record.leewen.work" target="_blank" rel="noopener" data-i18n="recordCta">立即体验</a>
-              <a class="button button-secondary" href="#record-demo" data-i18n="learnMore">了解更多</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="product-card poetry">
-          <div class="product-visual" aria-hidden="true">
-            <div class="poetry-map">
-              <i class="map-line line-a"></i>
-              <i class="map-line line-b"></i>
-              <i class="map-line line-c"></i>
-              <i class="map-line line-d"></i>
-              <span class="map-node node-main" data-i18n="nodePoetry">诗词</span>
-              <span class="map-node node-a" data-i18n="nodePoet">诗人</span>
-              <span class="map-node node-b" data-i18n="nodeTime">时代</span>
-              <span class="map-node node-c" data-i18n="nodePlace">地点</span>
-              <span class="map-node node-d" data-i18n="nodeWork">作品</span>
-            </div>
-          </div>
-          <div class="product-content">
-            <span class="product-label" data-i18n="productCulture">文化产品</span>
-            <h2 data-i18n="poemTitle">诗词图谱</h2>
-            <p data-i18n="poemDesc">从人物、时间和作品关系中，重新发现中国诗词。</p>
-            <div class="audience" data-i18n="poemAudience">适合诗词爱好者、教师、学生与文化创作者</div>
-            <div class="card-actions">
-              <a class="button button-primary" href="https://poem.leewen.work" target="_blank" rel="noopener" data-i18n="poemCta">立即探索</a>
-              <a class="button button-secondary" href="#poem-demo" data-i18n="learnMore">了解更多</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="product-card fcl">
-          <div class="product-visual" aria-hidden="true">
-            <div class="lineage-ui">
-              <span class="lineage-pill" data-i18n="lineagePill">Layer 0 → 5</span>
-              <i class="lineage-edge edge-1"></i>
-              <i class="lineage-edge edge-2"></i>
-              <i class="lineage-edge edge-3"></i>
-              <i class="lineage-edge edge-4"></i>
-              <i class="lineage-edge edge-5"></i>
-              <span class="lineage-node node-source-a" data-i18n="nodeSourceA">源 A</span>
-              <span class="lineage-node node-source-b" data-i18n="nodeSourceB">源 B</span>
-              <span class="lineage-node node-app" data-i18n="nodeApp">应用层</span>
-              <span class="lineage-node node-report" data-i18n="nodeReport">报表</span>
-            </div>
-          </div>
-          <div class="product-content">
-            <span class="product-label" data-i18n="productData">数据产品</span>
-            <h2 data-i18n="fclTitle">房贷止赎数据血缘</h2>
-            <p data-i18n="fclDesc">逆向分析房贷止赎数据处理系统，还原从原始文件到报表的完整数据血缘。</p>
-            <div class="audience" data-i18n="fclAudience">适合银行数据团队、监管科技工程师、产品经理与技术审阅者</div>
-            <div class="card-actions">
-              <a class="button button-primary" href="https://wen001-git.github.io/ForeclosureRule2/" target="_blank" rel="noopener" data-i18n="fclCta">立即查看</a>
-              <a class="button button-secondary" href="#fcl-demo" data-i18n="learnMore">了解更多</a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
+    <ProductGroup
+      id="products"
+      className="hero"
+      eyebrowKey="personalProductsEyebrow"
+      eyebrow="可直接体验的个人产品"
+      products={personalProducts}
+    />
 
     <section class="section section-tight" id="scenarios">
       <div class="section-heading">
@@ -874,26 +968,34 @@ import MascotCompanion from "../components/MascotCompanion.astro";
         <h2 data-i18n="scenarioTitle">找到适合你的产品</h2>
       </div>
       <div class="scenario-grid">
-        <article class="scenario" id="record-demo">
+        <article class="scenario" id="whiteboard-recorder-scenario">
           <span class="scenario-number">01</span>
           <h3 data-i18n="scenarioRecordTitle">想把讲解过程完整记录下来？</h3>
           <p data-i18n="scenarioRecordDesc">打开白板，边画边讲，完成后直接获得录制内容。适合课程、演示和知识表达。</p>
           <a class="text-link" href="https://record.leewen.work" target="_blank" rel="noopener" data-i18n="recordCta">立即体验</a>
         </article>
-        <article class="scenario" id="poem-demo">
+        <article class="scenario" id="poetry-graph-scenario">
           <span class="scenario-number">02</span>
           <h3 data-i18n="scenarioPoemTitle">想看见诗词背后的关系？</h3>
           <p data-i18n="scenarioPoemDesc">沿着诗人、时代、地点与作品的连接，发现传统列表之外的阅读路径。</p>
           <a class="text-link" href="https://poem.leewen.work" target="_blank" rel="noopener" data-i18n="poemCta">立即探索</a>
         </article>
-        <article class="scenario" id="fcl-demo">
-          <span class="scenario-number">03</span>
-          <h3 data-i18n="scenarioFclTitle">想看清复杂系统里数据从文件到报表的完整流向？</h3>
-          <p data-i18n="scenarioFclDesc">把分散在代码、数据库和配置里的处理逻辑反向梳理成可视血缘，便于审计与协作。</p>
-          <a class="text-link" href="https://wen001-git.github.io/ForeclosureRule2/" target="_blank" rel="noopener" data-i18n="fclCta">立即查看</a>
-        </article>
       </div>
     </section>
+
+    <ProductGroup
+      id="professional-work"
+      className="professional-group"
+      eyebrowKey="professionalEyebrow"
+      eyebrow="专业作品"
+      titleKey="professionalTitle"
+      title="银行数据与风险管理作品"
+      leadKey="professionalLead"
+      lead="面向银行业务、数据与风险管理场景，展示我如何把复杂规则、分析模型和系统流程转化为可理解、可验证的产品。"
+      products={professionalProducts}
+    />
+
+    {detailedProducts.map((product) => <ProductDetail product={product} />)}
 
     <div class="demo-band">
       <section class="section">
@@ -1009,8 +1111,8 @@ import MascotCompanion from "../components/MascotCompanion.astro";
     (() => {
       const translations = {
         "zh-CN": {
-          title: "LEEWEN · 白板录屏工具、诗词图谱与房贷止赎数据血缘",
-          description: "白板录屏工具、诗词图谱与房贷止赎数据血缘的产品介绍和体验入口。",
+          title: "LEEWEN · 个人产品与银行数据专业作品",
+          description: "白板录屏工具、诗词图谱，以及房贷止赎数据血缘与 ALM 经营分析报表等银行专业作品。",
           languageChanged: "语言已切换为简体中文",
           skip: "跳到主要内容",
           menuLabel: "打开或关闭菜单",
@@ -1022,10 +1124,15 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           mascotRainStatus: "一小片雨云飘到了她的头顶。",
           navProducts: "产品",
           navScenarios: "使用场景",
+          navProfessional: "专业作品",
           navCreator: "创作者",
           navArticles: "文章",
           navContact: "联系",
           navCta: "查看产品",
+          personalProductsEyebrow: "可直接体验的个人产品",
+          professionalEyebrow: "专业作品",
+          professionalTitle: "银行数据与风险管理作品",
+          professionalLead: "面向银行业务、数据与风险管理场景，展示我如何把复杂规则、分析模型和系统流程转化为可理解、可验证的产品。",
           boardNote: "边讲 · 边画 · 边录",
           productTool: "创作工具",
           recordTitle: "白板录屏工具",
@@ -1056,7 +1163,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           nodePlace: "地点",
           nodeWork: "作品",
           scenarioEyebrow: "按你的目标选择",
-          scenarioTitle: "找到适合你的产品",
+          scenarioTitle: "找到适合你的个人产品",
           scenarioRecordTitle: "想把讲解过程完整记录下来？",
           scenarioRecordDesc: "打开白板，边画边讲，完成后直接获得录制内容。适合课程、演示和知识表达。",
           scenarioPoemTitle: "想看见诗词背后的关系？",
@@ -1064,7 +1171,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           stepsEyebrow: "简单开始",
           stepsTitle: "从打开产品到获得结果",
           stepOneTitle: "选择产品",
-          stepOneDesc: "根据你的任务，进入白板录屏工具、诗词图谱或房贷止赎数据血缘。",
+          stepOneDesc: "先判断你要直接使用个人产品，还是了解银行数据与风险管理专业作品。",
           stepTwoTitle: "直接体验",
           stepTwoDesc: "无需先阅读冗长介绍，进入产品后再探索适合你的功能。",
           stepThreeTitle: "告诉我反馈",
@@ -1108,8 +1215,8 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           qrNote: "添加时请备注：产品名称 / 合作"
         },
         "zh-Hant": {
-          title: "LEEWEN · 白板錄屏工具、詩詞圖譜與房貸止贖資料血緣",
-          description: "白板錄屏工具、詩詞圖譜與房貸止贖資料血緣的產品介紹和體驗入口。",
+          title: "LEEWEN · 個人產品與銀行資料專業作品",
+          description: "白板錄屏工具、詩詞圖譜，以及房貸止贖資料血緣與 ALM 經營分析報表等銀行專業作品。",
           languageChanged: "語言已切換為繁體中文",
           skip: "跳到主要內容",
           menuLabel: "開啟或關閉選單",
@@ -1121,10 +1228,15 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           mascotRainStatus: "一小片雨雲飄到了她的頭頂。",
           navProducts: "產品",
           navScenarios: "使用場景",
+          navProfessional: "專業作品",
           navCreator: "創作者",
           navArticles: "文章",
           navContact: "聯絡",
           navCta: "查看產品",
+          personalProductsEyebrow: "可直接體驗的個人產品",
+          professionalEyebrow: "專業作品",
+          professionalTitle: "銀行資料與風險管理作品",
+          professionalLead: "面向銀行業務、資料與風險管理場景，展示我如何把複雜規則、分析模型和系統流程轉化為可理解、可驗證的產品。",
           boardNote: "邊講 · 邊畫 · 邊錄",
           productTool: "創作工具",
           recordTitle: "白板錄屏工具",
@@ -1155,7 +1267,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           nodePlace: "地點",
           nodeWork: "作品",
           scenarioEyebrow: "按你的目標選擇",
-          scenarioTitle: "找到適合你的產品",
+          scenarioTitle: "找到適合你的個人產品",
           scenarioRecordTitle: "想把講解過程完整記錄下來？",
           scenarioRecordDesc: "打開白板，邊畫邊講，完成後直接取得錄製內容。適合課程、演示和知識表達。",
           scenarioPoemTitle: "想看見詩詞背後的關係？",
@@ -1163,7 +1275,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           stepsEyebrow: "簡單開始",
           stepsTitle: "從打開產品到獲得結果",
           stepOneTitle: "選擇產品",
-          stepOneDesc: "根據你的任務，進入白板錄屏工具、詩詞圖譜或房貸止贖資料血緣。",
+          stepOneDesc: "先判斷你要直接使用個人產品，還是了解銀行資料與風險管理專業作品。",
           stepTwoTitle: "直接體驗",
           stepTwoDesc: "無需先閱讀冗長介紹，進入產品後再探索適合你的功能。",
           stepThreeTitle: "告訴我回饋",
@@ -1207,8 +1319,8 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           qrNote: "添加時請備註：產品名稱 / 合作"
         },
         "en": {
-          title: "LEEWEN · Whiteboard Recorder, Poetry Graph and Foreclosure Data Lineage",
-          description: "Product information and direct access to Whiteboard Recorder, Poetry Graph, and Foreclosure Data Lineage.",
+          title: "LEEWEN · Personal products and banking data work",
+          description: "Whiteboard Recorder, Poetry Graph, and professional banking work in foreclosure data lineage and ALM management analytics.",
           languageChanged: "Language changed to English",
           skip: "Skip to main content",
           menuLabel: "Open or close menu",
@@ -1220,10 +1332,15 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           mascotRainStatus: "A tiny rain cloud appears above her.",
           navProducts: "Products",
           navScenarios: "Use cases",
+          navProfessional: "Professional work",
           navCreator: "Creator",
           navArticles: "Stories",
           navContact: "Contact",
           navCta: "View products",
+          personalProductsEyebrow: "Personal products you can use now",
+          professionalEyebrow: "Professional work",
+          professionalTitle: "Banking data and risk management work",
+          professionalLead: "Public work showing how I turn complex banking rules, analytical models, and system processes into products people can understand and evaluate.",
           boardNote: "Explain · Draw · Record",
           productTool: "Creator tool",
           recordTitle: "Whiteboard Recorder",
@@ -1254,7 +1371,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           nodePlace: "Place",
           nodeWork: "Work",
           scenarioEyebrow: "Choose by your goal",
-          scenarioTitle: "Find the right product for you",
+          scenarioTitle: "Find the right personal product for you",
           scenarioRecordTitle: "Want to capture an explanation from start to finish?",
           scenarioRecordDesc: "Open the whiteboard, draw while you talk, and keep the result as a recording—for lessons, demos, and clear thinking.",
           scenarioPoemTitle: "Want to see the relationships behind poetry?",
@@ -1262,7 +1379,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           stepsEyebrow: "Start simply",
           stepsTitle: "From opening a product to getting a result",
           stepOneTitle: "Choose a product",
-          stepOneDesc: "Pick Whiteboard Recorder, Poetry Graph, or Foreclosure Data Lineage based on the task in front of you.",
+          stepOneDesc: "Decide whether you want to use a personal product or explore professional banking data and risk-management work.",
           stepTwoTitle: "Try it directly",
           stepTwoDesc: "Skip the long introduction. Enter the product and discover the features that matter to you.",
           stepThreeTitle: "Share feedback",
@@ -1342,6 +1459,32 @@ import MascotCompanion from "../components/MascotCompanion.astro";
       let mascotLayoutFrame = 0;
       let mascotMode = mascotMobileQuery.matches ? "mobile" : "desktop";
 
+      function readLocaleValue(source, path) {
+        return path.split(".").reduce((value, key) => value?.[key], source);
+      }
+
+      function applyProductLocales(lang) {
+        const localeKey = lang === "zh-Hant" ? "zhHant" : lang === "en" ? "en" : "zhCN";
+        document.querySelectorAll("[data-locale-scope]").forEach((scope) => {
+          let locale;
+          try {
+            const allLocales = JSON.parse(scope.dataset.localeScope);
+            locale = allLocales[localeKey] || allLocales.zhCN;
+          } catch (_) {
+            return;
+          }
+          scope.querySelectorAll("[data-locale-field]").forEach((element) => {
+            const value = readLocaleValue(locale, element.dataset.localeField);
+            if (typeof value === "string") element.textContent = value;
+          });
+          scope.querySelectorAll("[data-locale-attr]").forEach((element) => {
+            const [attribute, path] = element.dataset.localeAttr.split(":");
+            const value = readLocaleValue(locale, path);
+            if (attribute && typeof value === "string") element.setAttribute(attribute, value);
+          });
+        });
+      }
+
       function setLanguage(lang, announce = true) {
         const copy = translations[lang] || translations["zh-CN"];
         document.documentElement.lang = lang;
@@ -1361,6 +1504,7 @@ import MascotCompanion from "../components/MascotCompanion.astro";
           const key = element.dataset.i18nAria;
           if (copy[key]) element.setAttribute("aria-label", copy[key]);
         });
+        applyProductLocales(lang);
         languageButtons.forEach((button) => {
           button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
         });

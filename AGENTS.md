@@ -14,10 +14,10 @@
 
 ### 本地预览 `dist/`
 
-`npm run build` 产物 `dist/` 里 **只有一个** `dist/index.html`，CSS / JS / 图片全部内联为 `<style>` / `<script type="module">` / `data:image/...;base64,...`。直接双击（macOS `open dist/index.html`）或拖入浏览器即可在 `file://` 协议下打开页面，无任何外部资源依赖。
+`npm run build` 产物 `dist/` 里 **只有一个** `dist/index.html`，CSS / JS / 图片全部内联为 `<style>` / `<script type="module">` / `data:image/...;base64,...`。直接双击（macOS `open dist/index.html`）或拖入浏览器即可在 `file://` 协议下打开页面，无任何外部资源依赖；加入 ALM 截图后当前约 2.1 MB。
 
 - 本地预览：直接双击 `dist/index.html`。
-- 单文件分发：发这一个 `dist/index.html` 即可（约 1.3 MB）。
+- 单文件分发：发这一个 `dist/index.html` 即可（当前约 2.1 MB）。
 - Render 部署：继续发布 `dist/`，里面只剩 `index.html`。
 - 热重载开发：`npm run dev`（默认 http://localhost:4321/）。
 
@@ -53,6 +53,7 @@
 - [x] 已将单文件首页迁移到 Astro + TypeScript 工程，抽出导航和页脚组件，并保留原有三语切换。
 - [x] 已将公开画像与微信二维码迁入 `public/images/`，构建产物可直接部署。
 - [x] 首页 hero/scenarios/articles 三处各新增 FCL Pipeline Explorer 卡片，三语切换完整覆盖。
+- [x] 首页已拆分“个人产品”与“银行专业作品”，四款产品改由 Markdown Content Collection 自动分组，并为 ALM 经营分析报表加入三语详情与静态演示边界说明。
 - [x] 首页已加入左侧可拖动陪伴角色：五种透明表情、产品区域跟随、双端位置记忆、控件避让和三语无障碍均已接入。
 - [ ] 尚未实现产品、文章、关于我、合作及 404 等独立页面。
 - [x] 工作邮箱已确定为 `8639210@qq.com`。
@@ -64,14 +65,15 @@
 - [x] 确认产品优先的首页结构与三语核心文案。
 - [x] 生成单文件静态首页原型，完成三语切换、产品入口、创作者信任区和联系方式。
 - [x] 初始化 Astro 静态网站工程并将原型设计迁入页面、基础组件和现有 CSS 设计变量。
-- [ ] 建立三语内容结构与语言切换，完成三语首页、产品、文章、关于我、合作和 404 页面。
+- [ ] 在现有三语产品档案基础上，完成产品独立页、文章、关于我、合作和 404 页面。
 - [ ] 准备产品截图/演示和脱敏 PDF 简历。
 - [ ] 补充首批文章，完成响应式、多语言 SEO、可访问性与上线检查。
 - [x] 初始化 Git 仓库、配置 SSH 远端并完成首次提交推送。
 
 ## 文件地图
 
-- `src/pages/index.astro`：由原型迁移而来的三语产品优先首页，保留原有 CSS 设计变量与少量交互脚本；现已包含白板录屏工具、诗词图谱、房贷止赎数据血缘三款产品的首屏并列卡片与对应 scenarios/articles 区块。
+- `src/pages/index.astro`、`src/components/Product*.astro`：三语产品优先首页及数据驱动的产品分组、卡片和可选详情渲染。
+- `src/content.config.ts`、`src/content/products/`：产品档案 schema 与四款三语产品数据；新增产品优先在此增加档案，不把卡片重新写进首页。
 - `src/components/MascotCompanion.astro`、`public/images/mascot/`：首页陪伴角色的无边框交互层与五张透明 WebP 表情素材。
 - `src/components/SiteHeader.astro`、`src/components/SiteFooter.astro`：首页公共导航与页脚组件。
 - `public/images/`：可公开部署的彩铅肖像与微信二维码。
@@ -87,6 +89,7 @@
 - Astro 构建结果统一为 `dist/`；线上不运行 Node.js 或自建 API。
 - 简体中文使用根路径，繁体和英文分别使用 `/zh-hant/`、`/en/`。
 - 产品和文章用稳定 ID 关联三语版本；缺少译文时不生成空页面或无效语言链接。
+- 首页产品按 `personal` / `professional` 自动分组并按 `order` 排序；产品档案缺少三语、分类或链接时 Content Collection schema 会阻止构建。
 - 首页产品按钮直接链接产品子域名；主站产品详情只能作为次级“了解更多”入口。
 - 彩铅肖像和个人履历放在创作者信任区，不放在产品首屏。
 - 主站 DNS 配置不得覆盖 `record.leewen.work` 与 `poem.leewen.work`。
@@ -99,6 +102,7 @@
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-07-29 | 将首页重构为可扩展的“个人产品＋银行专业作品”双目录，新增四份三语产品档案、ALM 经营分析报表详情和真实 Dashboard 截图；why：区分购买型与专业评估型访客，并让后续新增产品无需复制页面结构 |
 | 2026-07-29 | 替换首页陪伴角色的整组视觉素材，以新提供的站立图作为默认形象，金砖、胜利、雨云和鬼脸作为点击表情；why：统一角色脸型与画风并采用用户确认的新角色组合 |
 | 2026-07-29 | 新增首页左侧可拖动陪伴角色，接入五种透明表情、区域跟随、双端位置记忆、控件避让、三语无障碍和无边框焦点样式；why：增加个人化创意，同时保护产品按钮与后续阅读区域 |
 | 2026-07-25 | post-build 把 `dist/index.html` 内联成 single-file（CSS/JS/图片→`<style>` / `<script type="module">` / `data:image/...;base64,...`），构建脚本改为 `astro build && node scripts/inline.mjs`，构建完 `dist/` 只剩一个约 1.3 MB 的 `index.html`，可双击亦可单独分发；同步删除了昨日误加的「禁止双击 HTML」硬约束、加入多语言页面落地时的重构提醒；why：用户希望 `dist/index.html` 自身就是可直接打开与分发的单一文件，避免任何额外打包或服务步骤 |
