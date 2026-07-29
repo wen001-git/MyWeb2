@@ -99,6 +99,7 @@
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-07-29 | 替换首页陪伴角色的整组视觉素材，以新提供的站立图作为默认形象，金砖、胜利、雨云和鬼脸作为点击表情；why：统一角色脸型与画风并采用用户确认的新角色组合 |
 | 2026-07-29 | 新增首页左侧可拖动陪伴角色，接入五种透明表情、区域跟随、双端位置记忆、控件避让、三语无障碍和无边框焦点样式；why：增加个人化创意，同时保护产品按钮与后续阅读区域 |
 | 2026-07-25 | post-build 把 `dist/index.html` 内联成 single-file（CSS/JS/图片→`<style>` / `<script type="module">` / `data:image/...;base64,...`），构建脚本改为 `astro build && node scripts/inline.mjs`，构建完 `dist/` 只剩一个约 1.3 MB 的 `index.html`，可双击亦可单独分发；同步删除了昨日误加的「禁止双击 HTML」硬约束、加入多语言页面落地时的重构提醒；why：用户希望 `dist/index.html` 自身就是可直接打开与分发的单一文件，避免任何额外打包或服务步骤 |
 | 2026-07-25 | 首页 hero / scenarios / articles 三处各新增 FCL Pipeline Explorer 卡片（CSS-only `.lineage-ui` 视觉、无新图片与新依赖），加入三语 i18n 文案并把 `.product-grid` 改为 3 列（1100px 中间断点降为 2 列再小堆叠），CTA 指向 `https://wen001-git.github.io/ForeclosureRule2/`；同步把硬约束子域名单扩展、把"为 FCL 申请三级子域名"加入 TODO、变更记录追加；why：用户要求把这款房贷止赎数据血缘工具纳入产品组合首页可被直接看到与体验 |
