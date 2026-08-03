@@ -53,8 +53,8 @@
 - [x] 已将单文件首页迁移到 Astro + TypeScript 工程，抽出导航和页脚组件，并保留原有三语切换。
 - [x] 已将公开画像与微信二维码迁入 `public/images/`，构建产物可直接部署。
 - [x] 首页 hero/scenarios/articles 三处各新增 FCL Pipeline Explorer 卡片，三语切换完整覆盖。
-- [x] 首页已拆分“个人产品”与“银行专业作品”，五款产品由 Markdown Content Collection 自动分组；ALM 经营分析与 FTP 经营分析均已加入三语详情和静态演示边界说明。
-- [x] FTP 经营分析已采用管理驾驶舱主图，并提供三语产品卡片、首页详细介绍和独立在线入口。
+- [x] 首页已拆分“个人产品”与“银行专业作品”，五款产品由 Markdown Content Collection 自动分组；ALM 经营分析与 FTP 经营分析均已加入三语详情、可复用媒体栏和静态演示边界说明。
+- [x] FTP 经营分析已采用“经营总览→账户级定价追溯→期限与重定价分析”三图故事栏，并提供三语产品卡片、首页详细介绍和独立在线入口。
 - [x] 首页已加入左侧可拖动陪伴角色：五种透明表情、产品区域跟随、双端位置记忆、控件避让和三语无障碍均已接入。
 - [ ] 尚未实现产品、文章、关于我、合作及 404 等独立页面。
 - [x] 工作邮箱已确定为 `8639210@qq.com`。
@@ -73,7 +73,7 @@
 
 ## 文件地图
 
-- `src/pages/index.astro`、`src/components/Product*.astro`：三语产品优先首页及数据驱动的产品分组、卡片和可选详情渲染。
+- `src/pages/index.astro`、`src/components/Product*.astro`：三语产品优先首页及数据驱动的产品分组、卡片、单图 sticky 与多图故事栏详情渲染。
 - `src/content.config.ts`、`src/content/products/`：产品档案 schema 与五款三语产品数据；新增产品优先在此增加档案，不把卡片重新写进首页。
 - `src/components/MascotCompanion.astro`、`public/images/mascot/`：首页陪伴角色的无边框交互层与五张透明 WebP 表情素材。
 - `src/components/SiteHeader.astro`、`src/components/SiteFooter.astro`：首页公共导航与页脚组件。
@@ -94,6 +94,7 @@
 - 首页产品按 `personal` / `professional` 自动分组并按 `order` 排序；产品档案缺少三语、分类或链接时 Content Collection schema 会阻止构建。
 - 首页产品按钮直接链接产品子域名；主站产品详情只能作为次级“了解更多”入口。
 - 银行专业作品统一使用“ALM 经营分析”与“FTP 经营分析”，避免“报表”弱化其多维分析、明细追溯和审计能力；演示系统内部标题不随主站改名。
+- 产品详情使用 1–3 项 `media` 数组；三语媒体标题与替代文字数量必须和图片数量一致，单图保持 sticky，多图自然纵向滚动，移动端统一改为普通单列。
 - 彩铅肖像和个人履历放在创作者信任区，不放在产品首屏。
 - 主站 DNS 配置不得覆盖 `record.leewen.work` 与 `poem.leewen.work`。
 - GitHub SSH 远端为 `git@github.com:wen001-git/MyWeb2.git`，主分支为 `main`。
@@ -105,6 +106,7 @@
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-08-03 | 放大 ALM/FTP 详情区产品识别行，并将 FTP 左栏扩展为经营总览、账户级追溯和多维分析三图故事栏；why：提高产品名称可见性并消除宽幅 Dashboard 下方的大面积视觉空白 |
 | 2026-08-03 | 将两款银行产品更名为 ALM 经营分析与 FTP 经营分析，为 FTP 增加 Dashboard 主图和三语首页详情；why：避免“报表”弱化完整分析系统能力，并让访客在进入演示前理解 FTP 的角色、指标和模块范围 |
 | 2026-08-03 | 新增 FTP 经营分析报表三语产品档案与公开 Dashboard 截图，并将其排在 ALM 之后展示；why：把已完成的资金转移定价专业作品纳入个人网站，供客户、合作方和招聘方直接体验 |
 | 2026-07-29 | 新增 `docs/ADD_PRODUCT_GUIDE.md` 并登记到文件地图，覆盖 AI 代办与手工新增产品流程；why：让后续产品上传有稳定、可重复、可跨工具接手的操作依据 |

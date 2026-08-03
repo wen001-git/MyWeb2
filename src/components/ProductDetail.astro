@@ -13,6 +13,7 @@ if (!product.detail || !product.detailAnchor) {
 }
 const detail = product.detail;
 const zh = detail.locales.zhCN;
+const isGallery = detail.media.length > 1;
 ---
 
 <section
@@ -22,13 +23,23 @@ const zh = detail.locales.zhCN;
   data-locale-scope={JSON.stringify(detail.locales)}
 >
   <div class="detail-shell">
-    <div class="detail-image">
-      <img
-        src={detail.image}
-        alt={zh.imageAlt}
-        loading="lazy"
-        data-locale-attr="alt:imageAlt"
-      >
+    <div class:list={["detail-media", isGallery ? "detail-media-gallery" : "detail-media-single"]}>
+      {detail.media.map((media, index) => (
+        <figure class="detail-media-item">
+          <img
+            src={media.image}
+            alt={zh.media[index].alt}
+            loading="lazy"
+            data-locale-attr={`alt:media.${index}.alt`}
+          >
+          {isGallery && (
+            <figcaption>
+              <span class="detail-media-number">{String(index + 1).padStart(2, "0")}</span>
+              <span data-locale-field={`media.${index}.title`}>{zh.media[index].title}</span>
+            </figcaption>
+          )}
+        </figure>
+      ))}
     </div>
     <div class="detail-copy">
       <p class="eyebrow" data-locale-field="eyebrow">{zh.eyebrow}</p>

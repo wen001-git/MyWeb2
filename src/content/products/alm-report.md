@@ -31,11 +31,12 @@ locales:
     secondaryCta: View details
 detail:
   enabled: true
-  image: /images/products/alm-dashboard.jpg
+  media:
+    - image: /images/products/alm-dashboard.jpg
   contactHref: mailto:8639210@qq.com?subject=ALM%20项目合作
   locales:
     zhCN:
-      eyebrow: ALM 经营分析与利率风险
+      eyebrow: ALM 经营分析 · 利率风险
       title: 把资产负债表、利率风险和压力情景放进同一套经营视图
       lead: 这套静态演示把管理层关心的核心指标、分析师需要的风险拆解和实施团队维护的参数配置组织在同一个产品框架中，帮助不同角色围绕同一组风险语言协作。
       metrics:
@@ -68,9 +69,11 @@ detail:
       notice: 这是使用模拟数据的静态演示版，主要用于只读浏览与交互体验；依赖后台服务的配置和写入操作不代表线上生产能力。
       primaryCta: 打开在线演示
       secondaryCta: 联系项目合作
-      imageAlt: ALM 经营分析报表的总览仪表盘，展示资产负债、NII、EVE、期限缺口和压力情景指标
+      media:
+        - title: 经营与风险总览
+          alt: ALM 经营分析的总览仪表盘，展示资产负债、NII、EVE、期限缺口和压力情景指标
     zhHant:
-      eyebrow: ALM 經營分析與利率風險
+      eyebrow: ALM 經營分析 · 利率風險
       title: 把資產負債表、利率風險和壓力情景放進同一套經營視圖
       lead: 這套靜態演示把管理層關心的核心指標、分析師需要的風險拆解和實施團隊維護的參數設定組織在同一個產品框架中，協助不同角色圍繞同一組風險語言協作。
       metrics:
@@ -103,9 +106,11 @@ detail:
       notice: 這是使用模擬資料的靜態演示版，主要用於唯讀瀏覽與互動體驗；依賴後台服務的設定和寫入操作不代表線上生產能力。
       primaryCta: 打開線上演示
       secondaryCta: 聯絡項目合作
-      imageAlt: ALM 經營分析報表的總覽儀表板，展示資產負債、NII、EVE、期限缺口和壓力情景指標
+      media:
+        - title: 經營與風險總覽
+          alt: ALM 經營分析的總覽儀表板，展示資產負債、NII、EVE、期限缺口和壓力情景指標
     en:
-      eyebrow: ALM performance and interest-rate risk
+      eyebrow: ALM Management Analytics · Interest-rate risk
       title: Put the balance sheet, interest-rate risk, and stress scenarios into one management view
       lead: This static demo organizes executive indicators, analyst-level risk breakdowns, and implementation configuration in one product framework so different roles can work from the same risk language.
       metrics:
@@ -138,5 +143,7 @@ detail:
       notice: This static demo uses simulated data and is intended for read-only browsing and interaction review. Configuration and write operations that depend on backend services do not represent live production capability.
       primaryCta: Open online demo
       secondaryCta: Discuss a project
-      imageAlt: ALM management dashboard showing balance-sheet, NII, EVE, maturity-gap, and stress-scenario indicators
+      media:
+        - title: Performance and risk overview
+          alt: ALM management dashboard showing balance-sheet, NII, EVE, maturity-gap, and stress-scenario indicators
 ---

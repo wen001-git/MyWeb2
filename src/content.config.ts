@@ -15,6 +15,11 @@ const metric = z.object({
   label: z.string().min(1)
 });
 
+const localeMedia = z.object({
+  title: z.string().min(1),
+  alt: z.string().min(1)
+});
+
 const localeDetail = z.object({
   eyebrow: z.string().min(1),
   title: z.string().min(1),
@@ -30,7 +35,7 @@ const localeDetail = z.object({
   notice: z.string().min(1),
   primaryCta: z.string().min(1),
   secondaryCta: z.string().min(1),
-  imageAlt: z.string().min(1)
+  media: z.array(localeMedia).min(1).max(3)
 });
 
 const cardLocales = z.object({
@@ -59,7 +64,9 @@ const products = defineCollection({
     locales: cardLocales,
     detail: z.object({
       enabled: z.literal(true),
-      image: z.string().startsWith("/"),
+      media: z.array(z.object({
+        image: z.string().startsWith("/")
+      })).min(1).max(3),
       contactHref: z.string().startsWith("mailto:"),
       locales: detailLocales
     }).optional()
@@ -76,6 +83,18 @@ const products = defineCollection({
         code: "custom",
         message: "coverImage is required when visual is image",
         path: ["coverImage"]
+      });
+    }
+    if (data.detail) {
+      const mediaCount = data.detail.media.length;
+      (["zhCN", "zhHant", "en"] as const).forEach((localeKey) => {
+        if (data.detail?.locales[localeKey].media.length !== mediaCount) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${localeKey} detail media must match the detail media count`,
+            path: ["detail", "locales", localeKey, "media"]
+          });
+        }
       });
     }
   })
