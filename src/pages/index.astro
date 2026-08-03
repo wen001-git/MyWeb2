@@ -1485,7 +1485,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
       const mascotFrames = [...mascot.querySelectorAll(".mascot-frame")];
       const mascotStatus = document.getElementById("mascot-status");
       const productsSection = document.getElementById("products");
-      const creatorSection = document.getElementById("creator");
       const siteHeader = document.querySelector(".site-header");
       const mascotControls = [
         siteHeader,
@@ -1647,7 +1646,7 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
       }
 
       function updateMascotAvoidance() {
-        if (mascot.dataset.visible !== "true" || mascot.classList.contains("is-dragging")) {
+        if (mascot.classList.contains("is-dragging")) {
           mascot.classList.remove("is-avoiding");
           return;
         }
@@ -1661,21 +1660,10 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
         mascot.classList.toggle("is-avoiding", overlapsControl);
       }
 
-      function updateMascotVisibility() {
-        const productsTop = productsSection.getBoundingClientRect().top;
-        const creatorTop = creatorSection.getBoundingClientRect().top;
-        const visible = productsTop < window.innerHeight && creatorTop > window.innerHeight;
-        mascot.dataset.visible = String(visible);
-        mascot.setAttribute("aria-hidden", String(!visible));
-        mascotButton.tabIndex = visible ? 0 : -1;
-        if (!visible) mascot.classList.remove("is-avoiding");
-      }
-
       function scheduleMascotLayout() {
         if (mascotLayoutFrame) return;
         mascotLayoutFrame = requestAnimationFrame(() => {
           mascotLayoutFrame = 0;
-          updateMascotVisibility();
           updateMascotAvoidance();
         });
       }

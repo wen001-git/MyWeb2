@@ -1,4 +1,4 @@
-<div class="mascot-companion" id="mascot-companion" aria-hidden="true">
+<div class="mascot-companion" id="mascot-companion">
   <button
     class="mascot-button"
     id="mascot-button"
@@ -26,17 +26,8 @@
     left: 12px;
     height: var(--mascot-height, clamp(180px, 22vh, 240px));
     aspect-ratio: 2 / 3;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 180ms ease, visibility 180ms ease;
-    will-change: top, left;
-  }
-
-  .mascot-companion[data-visible="true"] {
-    opacity: 1;
-    visibility: visible;
     pointer-events: auto;
+    will-change: top, left;
   }
 
   .mascot-button {
