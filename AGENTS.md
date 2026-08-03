@@ -54,6 +54,7 @@
 - [x] 已将公开画像与微信二维码迁入 `public/images/`，构建产物可直接部署。
 - [x] 首页 hero/scenarios/articles 三处各新增 FCL Pipeline Explorer 卡片，三语切换完整覆盖。
 - [x] 首页已拆分“个人产品”与“银行专业作品”，四款产品改由 Markdown Content Collection 自动分组，并为 ALM 经营分析报表加入三语详情与静态演示边界说明。
+- [x] 银行专业作品新增 FTP 经营分析报表，以三语产品卡片、真实演示截图和独立在线入口呈现。
 - [x] 首页已加入左侧可拖动陪伴角色：五种透明表情、产品区域跟随、双端位置记忆、控件避让和三语无障碍均已接入。
 - [ ] 尚未实现产品、文章、关于我、合作及 404 等独立页面。
 - [x] 工作邮箱已确定为 `8639210@qq.com`。
@@ -73,7 +74,7 @@
 ## 文件地图
 
 - `src/pages/index.astro`、`src/components/Product*.astro`：三语产品优先首页及数据驱动的产品分组、卡片和可选详情渲染。
-- `src/content.config.ts`、`src/content/products/`：产品档案 schema 与四款三语产品数据；新增产品优先在此增加档案，不把卡片重新写进首页。
+- `src/content.config.ts`、`src/content/products/`：产品档案 schema 与五款三语产品数据；新增产品优先在此增加档案，不把卡片重新写进首页。
 - `src/components/MascotCompanion.astro`、`public/images/mascot/`：首页陪伴角色的无边框交互层与五张透明 WebP 表情素材。
 - `src/components/SiteHeader.astro`、`src/components/SiteFooter.astro`：首页公共导航与页脚组件。
 - `public/images/`：可公开部署的彩铅肖像与微信二维码。
@@ -103,6 +104,7 @@
 
 | 日期 | 变更内容 |
 |------|----------|
+| 2026-08-03 | 新增 FTP 经营分析报表三语产品档案与公开 Dashboard 截图，并将其排在 ALM 之后展示；why：把已完成的资金转移定价专业作品纳入个人网站，供客户、合作方和招聘方直接体验 |
 | 2026-07-29 | 新增 `docs/ADD_PRODUCT_GUIDE.md` 并登记到文件地图，覆盖 AI 代办与手工新增产品流程；why：让后续产品上传有稳定、可重复、可跨工具接手的操作依据 |
 | 2026-07-29 | 将首页重构为可扩展的“个人产品＋银行专业作品”双目录，新增四份三语产品档案、ALM 经营分析报表详情和真实 Dashboard 截图；why：区分购买型与专业评估型访客，并让后续新增产品无需复制页面结构 |
 | 2026-07-29 | 替换首页陪伴角色的整组视觉素材，以新提供的站立图作为默认形象，金砖、胜利、雨云和鬼脸作为点击表情；why：统一角色脸型与画风并采用用户确认的新角色组合 |
