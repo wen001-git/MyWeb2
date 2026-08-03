@@ -77,7 +77,7 @@ detail:
           alt: FTP 经营分析的管理驾驶舱，展示净利息收入、资产端与负债端利差、业务线及机构 FTP 贡献
         - title: 账户级定价追溯
           alt: FTP 账户计算步骤详解，展示账户信息、FTP 方法、利率组成和逐项定价结果
-        - title: 期限与重定价分析
+        - title: 期限结构分析
           alt: FTP 多维期限结构分析，展示不同期限的 FTP 利率曲线、余额和缺口数据
     zhHant:
       eyebrow: FTP 經營分析 · 內部資金定價
@@ -119,7 +119,7 @@ detail:
           alt: FTP 經營分析的管理駕駛艙，展示淨利息收入、資產端與負債端利差、業務線及機構 FTP 貢獻
         - title: 帳戶級定價追溯
           alt: FTP 帳戶計算步驟詳解，展示帳戶資訊、FTP 方法、利率組成和逐項定價結果
-        - title: 期限與重定價分析
+        - title: 期限結構分析
           alt: FTP 多維期限結構分析，展示不同期限的 FTP 利率曲線、餘額和缺口資料
     en:
       eyebrow: FTP Performance Analytics · Internal funds pricing
@@ -161,6 +161,6 @@ detail:
           alt: FTP performance analytics dashboard showing net interest income, asset and liability spreads, and FTP contribution by business line and entity
         - title: Account-level pricing trace
           alt: Step-by-step FTP account calculation showing account data, FTP method, rate components, and pricing results
-        - title: Term and repricing analysis
+        - title: Term-structure analysis
           alt: Multidimensional FTP term-structure analysis showing rate curves, balances, and gaps across maturity buckets
 ---
