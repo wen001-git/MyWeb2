@@ -10,14 +10,14 @@ detailAnchor: alm-detail
 locales:
   zhCN:
     label: 银行风险管理专业作品
-    title: ALM 经营分析报表
+    title: ALM 经营分析
     summary: 将资产负债结构、收益、经济价值、流动性和压力测试集中到一个可交互的银行 ALM 工作台。
     audience: 面向银行管理层、ALM 与风险分析师、实施及售前团队
     primaryCta: 查看演示
     secondaryCta: 查看详细介绍
   zhHant:
     label: 銀行風險管理專業作品
-    title: ALM 經營分析報表
+    title: ALM 經營分析
     summary: 將資產負債結構、收益、經濟價值、流動性和壓力測試集中到一個可互動的銀行 ALM 工作台。
     audience: 面向銀行管理層、ALM 與風險分析師、實施及售前團隊
     primaryCta: 查看演示
