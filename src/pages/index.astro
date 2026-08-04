@@ -712,14 +712,12 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
       font-size: .88rem;
     }
 
-    .scenario-grid,
     .steps-grid,
     .article-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 20px;
     }
-    .scenario,
     .step-card,
     .article-card {
       padding: 26px;
@@ -727,7 +725,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
       border-radius: var(--radius-md);
       background: rgba(255, 253, 248, .72);
     }
-    .scenario-number,
     .step-number {
       display: grid;
       place-items: center;
@@ -739,7 +736,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
       background: var(--navy);
       font-weight: 900;
     }
-    .scenario p,
     .step-card p,
     .article-card p { color: var(--muted); }
     .text-link {
@@ -971,7 +967,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
       }
       .hero { padding-top: 24px; }
       .product-grid,
-      .scenario-grid,
       .steps-grid { grid-template-columns: 1fr; }
       .product-card { padding: 12px; border-radius: 22px; }
       .professional-group { padding: 34px 14px; border-radius: 22px; }
@@ -1013,36 +1008,15 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
       products={personalProducts}
     />
 
-    <section class="section section-tight" id="scenarios">
-      <div class="section-heading">
-        <p class="eyebrow" data-i18n="scenarioEyebrow">按你的目标选择</p>
-        <h2 data-i18n="scenarioTitle">找到适合你的产品</h2>
-      </div>
-      <div class="scenario-grid">
-        <article class="scenario" id="whiteboard-recorder-scenario">
-          <span class="scenario-number">01</span>
-          <h3 data-i18n="scenarioRecordTitle">想把讲解过程完整记录下来？</h3>
-          <p data-i18n="scenarioRecordDesc">打开白板，边画边讲，完成后直接获得录制内容。适合课程、演示和知识表达。</p>
-          <a class="text-link" href="https://record.leewen.work" target="_blank" rel="noopener" data-i18n="recordCta">立即体验</a>
-        </article>
-        <article class="scenario" id="poetry-graph-scenario">
-          <span class="scenario-number">02</span>
-          <h3 data-i18n="scenarioPoemTitle">想看见诗词背后的关系？</h3>
-          <p data-i18n="scenarioPoemDesc">沿着诗人、时代、地点与作品的连接，发现传统列表之外的阅读路径。</p>
-          <a class="text-link" href="https://poem.leewen.work" target="_blank" rel="noopener" data-i18n="poemCta">立即探索</a>
-        </article>
-      </div>
-    </section>
-
     <ProductGroup
       id="professional-work"
       className="professional-group"
       eyebrowKey="professionalEyebrow"
-      eyebrow="专业作品"
+      eyebrow="银行金融专业作品"
       titleKey="professionalTitle"
-      title="银行数据与风险管理作品"
+      title="银行金融与数据产品作品"
       leadKey="professionalLead"
-      lead="面向银行业务、数据与风险管理场景，展示我如何把复杂规则、分析模型和系统流程转化为可理解、可验证的产品。"
+      lead="面向银行业务、数据治理、风险管理与经营分析，展示我如何把复杂规则转化为可落地、可追溯的系统产品。"
       products={professionalProducts}
     />
 
@@ -1174,16 +1148,15 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           mascotVictoryStatus: "她开心地比了一个胜利手势。",
           mascotRainStatus: "一小片雨云飘到了她的头顶。",
           navProducts: "产品",
-          navScenarios: "使用场景",
-          navProfessional: "专业作品",
+          navProfessional: "银行作品",
           navCreator: "创作者",
           navArticles: "文章",
           navContact: "联系",
           navCta: "查看产品",
           personalProductsEyebrow: "可直接体验的个人产品",
-          professionalEyebrow: "专业作品",
-          professionalTitle: "银行数据与风险管理作品",
-          professionalLead: "面向银行业务、数据与风险管理场景，展示我如何把复杂规则、分析模型和系统流程转化为可理解、可验证的产品。",
+          professionalEyebrow: "银行金融专业作品",
+          professionalTitle: "银行金融与数据产品作品",
+          professionalLead: "面向银行业务、数据治理、风险管理与经营分析，展示我如何把复杂规则转化为可落地、可追溯的系统产品。",
           boardNote: "边讲 · 边画 · 边录",
           productTool: "创作工具",
           recordTitle: "白板录屏工具",
@@ -1202,8 +1175,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           fclDesc: "逆向分析房贷止赎数据处理系统，从 Lender 服务机构文件一路还原到报表的血缘；点击任一字段，可沿 Pipeline Layer 0→5 看到完整转换路径。",
           fclAudience: "适合银行数据团队、监管科技工程师、产品经理与技术审阅者",
           fclCta: "立即查看",
-          scenarioFclTitle: "想看清复杂系统里数据从文件到报表的完整流向？",
-          scenarioFclDesc: "把分散在代码、数据库和配置里的处理逻辑反向梳理成可视血缘；点击任一报表字段，能看到它走过了哪几层 Pipeline。",
           poemTitle: "诗词图谱",
           poemDesc: "从人物、时间和作品关系中，重新发现中国诗词。",
           poemAudience: "适合诗词爱好者、教师、学生与文化创作者",
@@ -1213,12 +1184,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           nodeTime: "时代",
           nodePlace: "地点",
           nodeWork: "作品",
-          scenarioEyebrow: "按你的目标选择",
-          scenarioTitle: "找到适合你的个人产品",
-          scenarioRecordTitle: "想把讲解过程完整记录下来？",
-          scenarioRecordDesc: "打开白板，边画边讲，完成后直接获得录制内容。适合课程、演示和知识表达。",
-          scenarioPoemTitle: "想看见诗词背后的关系？",
-          scenarioPoemDesc: "沿着诗人、时代、地点与作品的连接，发现传统列表之外的阅读路径。",
           stepsEyebrow: "简单开始",
           stepsTitle: "从打开产品到获得结果",
           stepOneTitle: "选择产品",
@@ -1278,16 +1243,15 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           mascotVictoryStatus: "她開心地比了一個勝利手勢。",
           mascotRainStatus: "一小片雨雲飄到了她的頭頂。",
           navProducts: "產品",
-          navScenarios: "使用場景",
-          navProfessional: "專業作品",
+          navProfessional: "銀行作品",
           navCreator: "創作者",
           navArticles: "文章",
           navContact: "聯絡",
           navCta: "查看產品",
           personalProductsEyebrow: "可直接體驗的個人產品",
-          professionalEyebrow: "專業作品",
-          professionalTitle: "銀行資料與風險管理作品",
-          professionalLead: "面向銀行業務、資料與風險管理場景，展示我如何把複雜規則、分析模型和系統流程轉化為可理解、可驗證的產品。",
+          professionalEyebrow: "銀行金融專業作品",
+          professionalTitle: "銀行金融與資料產品作品",
+          professionalLead: "面向銀行業務、資料治理、風險管理與經營分析，展示我如何把複雜規則轉化為可落地、可追溯的系統產品。",
           boardNote: "邊講 · 邊畫 · 邊錄",
           productTool: "創作工具",
           recordTitle: "白板錄屏工具",
@@ -1306,8 +1270,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           fclDesc: "逆向分析房貸止贖資料處理系統，從 Lender 服務機構檔案一路還原到報表的血緣；點擊任一欄位，可沿 Pipeline Layer 0→5 看到完整轉換路徑。",
           fclAudience: "適合銀行資料團隊、監管科技工程師、產品經理與技術審閱者",
           fclCta: "立即查看",
-          scenarioFclTitle: "想看清複雜系統裡資料從檔案到報表的完整流向？",
-          scenarioFclDesc: "把分散在程式碼、資料庫和設定檔裡的處理邏輯反向梳理成可視血緣；點擊任一報表欄位，能看到它走過了哪幾層 Pipeline。",
           poemTitle: "詩詞圖譜",
           poemDesc: "從人物、時間和作品關係中，重新發現中國詩詞。",
           poemAudience: "適合詩詞愛好者、教師、學生與文化創作者",
@@ -1317,12 +1279,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           nodeTime: "時代",
           nodePlace: "地點",
           nodeWork: "作品",
-          scenarioEyebrow: "按你的目標選擇",
-          scenarioTitle: "找到適合你的個人產品",
-          scenarioRecordTitle: "想把講解過程完整記錄下來？",
-          scenarioRecordDesc: "打開白板，邊畫邊講，完成後直接取得錄製內容。適合課程、演示和知識表達。",
-          scenarioPoemTitle: "想看見詩詞背後的關係？",
-          scenarioPoemDesc: "沿著詩人、時代、地點與作品的連結，發現傳統列表之外的閱讀路徑。",
           stepsEyebrow: "簡單開始",
           stepsTitle: "從打開產品到獲得結果",
           stepOneTitle: "選擇產品",
@@ -1382,16 +1338,15 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           mascotVictoryStatus: "She flashes a cheerful victory sign.",
           mascotRainStatus: "A tiny rain cloud appears above her.",
           navProducts: "Products",
-          navScenarios: "Use cases",
-          navProfessional: "Professional work",
+          navProfessional: "Banking work",
           navCreator: "Creator",
           navArticles: "Stories",
           navContact: "Contact",
           navCta: "View products",
           personalProductsEyebrow: "Personal products you can use now",
-          professionalEyebrow: "Professional work",
-          professionalTitle: "Banking data and risk management work",
-          professionalLead: "Public work showing how I turn complex banking rules, analytical models, and system processes into products people can understand and evaluate.",
+          professionalEyebrow: "Banking and finance work",
+          professionalTitle: "Banking, finance, and data products",
+          professionalLead: "Work across banking, data governance, risk management, and business analysis—showing how I turn complex rules into practical, traceable system products.",
           boardNote: "Explain · Draw · Record",
           productTool: "Creator tool",
           recordTitle: "Whiteboard Recorder",
@@ -1410,8 +1365,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           fclDesc: "Reverse-engineers the mortgage foreclosure pipeline from servicer files all the way to reporting—click any field to walk its full transformation through Pipeline Layer 0→5.",
           fclAudience: "For banking data teams, regtech engineers, product managers, and technical reviewers",
           fclCta: "Try it now",
-          scenarioFclTitle: "Need to see how data flows from raw files to reports in a complex system?",
-          scenarioFclDesc: "Reverse-engineer scattered code, database, and config into a visual lineage—click any report field to see exactly which Pipeline layers it passed through.",
           poemTitle: "Poetry Graph",
           poemDesc: "Rediscover Chinese poetry through the relationships between people, time, and works.",
           poemAudience: "For poetry lovers, teachers, students, and culture creators",
@@ -1421,12 +1374,6 @@ const detailedProducts = products.filter((product) => product.detail?.enabled);
           nodeTime: "Era",
           nodePlace: "Place",
           nodeWork: "Work",
-          scenarioEyebrow: "Choose by your goal",
-          scenarioTitle: "Find the right personal product for you",
-          scenarioRecordTitle: "Want to capture an explanation from start to finish?",
-          scenarioRecordDesc: "Open the whiteboard, draw while you talk, and keep the result as a recording—for lessons, demos, and clear thinking.",
-          scenarioPoemTitle: "Want to see the relationships behind poetry?",
-          scenarioPoemDesc: "Follow connections between poets, eras, places, and works to discover a new path through Chinese poetry.",
           stepsEyebrow: "Start simply",
           stepsTitle: "From opening a product to getting a result",
           stepOneTitle: "Choose a product",

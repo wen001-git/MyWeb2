@@ -11,9 +11,7 @@ const { product } = Astro.props;
 const zh = product.locales.zhCN;
 const secondaryHref = product.detail?.enabled && product.detailAnchor
   ? `#${product.detailAnchor}`
-  : product.category === "personal"
-    ? `#${product.productId}-scenario`
-    : undefined;
+  : undefined;
 ---
 
 <article
