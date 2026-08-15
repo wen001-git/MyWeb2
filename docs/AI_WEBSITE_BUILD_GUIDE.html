@@ -184,7 +184,7 @@ Get-ChildItem -Force</code></pre></div>
 设备：桌面和手机都要好用。
 请：
 1. 先总结你理解的目标；
-2. 只询问最多 3 个真正影响方向的问题；
+2. 如果有任何疑问，请继续提问，直到目标、内容、隐私边界和重要选择都足够清楚；不限制问题总数，但不要重复询问已经回答过的内容；
 3. 对重要选择给 2–3 个方案、优缺点和推荐；
 4. 等我确认设计简报后再写代码。</code></pre></div>
       <h3>leewen.work 的真实取舍</h3>
@@ -248,7 +248,7 @@ Get-ChildItem -Force</code></pre></div>
     <section class="chapter" id="ch6" data-chapter="6">
       <div class="chapter-number"><span>06</span><small>VERIFY</small></div>
       <h2>本地预览、检查和构建</h2>
-      <p class="chapter-intro">“Codex 说完成了”不等于完成。你要亲眼看到页面、执行构建，并知道产物在哪里。</p>
+      <p class="chapter-intro">“Codex 说完成了”不等于完成。你要亲眼看到页面，让 Codex 执行构建并汇报结果，同时知道最终产物在哪里。</p>
       <div class="ownership"><div class="owner human"><b>你亲手完成</b><span>打开 Codex 给出的本地网址，用眼睛检查内容、图片和手机布局。</span></div><div class="owner ai"><b>交给 Codex</b><span>安装依赖、启动开发服务器、运行构建、检查 dist 和控制台错误。</span></div></div>
       <div class="code-block prompt"><div class="code-head"><span>复制给 Codex：帮我预览并构建</span><button class="copy" type="button">复制</button></div><pre><code>请在当前项目目录替我完成本地技术验证：
 1. 检查 package.json 的现有命令；
@@ -258,21 +258,28 @@ Get-ChildItem -Force</code></pre></div>
 5. 检查 dist 中实际生成了什么；
 6. 汇报成功、警告和失败，不要隐瞒。
 请保持开发服务器可用，让我亲手在浏览器检查页面。不要自动修改与错误无关的文件。</code></pre></div>
-      <h3>6.1 安装依赖并启动开发服务器</h3>
-      <div class="code-block"><div class="code-head"><span>Terminal / PowerShell</span><button class="copy" type="button">复制</button></div><pre><code>npm install
-npm run dev</code></pre></div>
-      <p>终端会显示类似 <span class="inline-code">http://localhost:4321/</span> 的地址。按终端实际显示为准，不要盲猜端口。保持这个终端窗口运行，在浏览器打开地址。</p>
+      <h3>6.1 让 Codex 安装依赖并启动预览</h3>
+      <div class="code-block prompt"><div class="code-head"><span>复制给 Codex · 不需要打开终端</span><button class="copy" type="button">复制</button></div><pre><code>请在当前项目目录替我启动本地预览，不要让我手动打开终端或输入命令。
+请先检查 package.json，只在确有需要时安装依赖，然后启动现有开发服务器。
+告诉我实际本地网址，并保持服务器运行，直到我完成浏览器检查。
+如果遇到系统密码、登录、授权或权限弹窗，请停下来告诉我应该亲手完成什么。</code></pre></div>
+      <p>Codex 通常会在后台运行 <span class="inline-code">npm install</span> 和 <span class="inline-code">npm run dev</span>，再给你类似 <span class="inline-code">http://localhost:4321/</span> 的实际地址。你不需要理解终端，只需点击 Codex 给出的地址并检查页面。</p>
       <div class="checklist">
         <div class="check-row"><input type="checkbox" id="c6a"><label for="c6a">页面能打开，没有空白或错误覆盖层</label></div>
         <div class="check-row"><input type="checkbox" id="c6b"><label for="c6b">缩窄浏览器后没有横向滚动，按钮仍可点</label></div>
         <div class="check-row"><input type="checkbox" id="c6c"><label for="c6c">图片清晰且不变形，链接指向正确地址</label></div>
         <div class="check-row"><input type="checkbox" id="c6d"><label for="c6d">页面没有公开手机号、密钥或内部资料</label></div>
       </div>
-      <h3>6.2 生成部署产物</h3>
-      <div class="code-block"><div class="code-head"><span>新开一个终端，仍在项目目录</span><button class="copy" type="button">复制</button></div><pre><code>npm run build
-ls -lah dist</code></pre></div>
-      <p>构建成功应以退出码 0 结束，并出现 <span class="inline-code">dist/</span>。本项目的特殊构建会继续把 CSS、JavaScript 和图片内联到 <span class="inline-code">dist/index.html</span>，所以可以直接双击。普通 Astro 项目通常包含多个文件，需要通过服务器预览。</p>
-      <div class="code-block"><div class="code-head"><span>macOS 双击验证本项目的单文件产物</span><button class="copy" type="button">复制</button></div><pre><code>open dist/index.html</code></pre></div>
+      <h3>6.2 让 Codex 生成并检查部署产物</h3>
+      <div class="code-block prompt"><div class="code-head"><span>复制给 Codex · 自动构建和检查</span><button class="copy" type="button">复制</button></div><pre><code>请替我完成部署前构建，不要让我手动打开终端或输入命令。
+请运行项目现有的构建命令，检查退出状态和 dist 目录中的实际文件。
+如果构建成功，请告诉我：
+1. 生成了哪些部署文件；
+2. 应该部署哪个目录；
+3. 我怎样打开最终页面进行检查。
+如果 dist/index.html 是可独立打开的单文件，请尝试为我打开；如果系统要求授权，请停下来告诉我如何亲手确认。
+如果构建失败，请保留完整错误，先诊断根因，只做最小修复后重新验证。</code></pre></div>
+      <p>Codex 会运行类似 <span class="inline-code">npm run build</span> 的项目命令并检查 <span class="inline-code">dist/</span>。本项目的特殊构建会把 CSS、JavaScript 和图片内联到 <span class="inline-code">dist/index.html</span>，所以可以直接打开；普通 Astro 项目通常包含多个文件，需要通过本地服务器预览。</p>
       <h3>构建失败时不要只发最后一行</h3>
       <div class="code-block prompt"><div class="code-head"><span>构建排错提示词</span><button class="copy" type="button">复制</button></div><pre><code>请诊断这个 Astro 构建失败，不要先重装全部依赖。
 
@@ -299,7 +306,7 @@ ls -lah dist</code></pre></div>
       <div class="chapter-number"><span>07</span><small>VERSION CONTROL</small></div>
       <h2>用 Git 保存历史，再连接 GitHub</h2>
       <p class="chapter-intro">本地文件夹是工作现场；本地 Git 仓库记录版本；GitHub 远端仓库保存可同步的副本。三者不是同一个东西。</p>
-      <div class="ownership"><div class="owner human"><b>你亲手完成</b><span>第一次登录 GitHub、批准创建公开仓库，以及把 SSH 公钥添加到账户。</span></div><div class="owner ai"><b>优先交给 Codex</b><span>检查隐私、初始化 Git、提交、用 SSH 创建/连接远端并推送。</span></div></div>
+      <div class="ownership"><div class="owner human"><b>你亲手完成</b><span>在 Codex 停下来时完成 GitHub 登录或浏览器授权，并确认哪些内容可以公开。</span></div><div class="owner ai"><b>交给 Codex</b><span>检查隐私、初始化 Git、创建提交、配置 SSH 远端、创建仓库并推送代码。</span></div></div>
       <div class="diagram">
         <svg viewBox="0 0 920 265" role="img" aria-labelledby="gitTitle gitDesc"><title id="gitTitle">文件夹、本地 Git 与 GitHub 的关系</title><desc id="gitDesc">先在项目文件夹修改，经提交形成 Git 历史，再推送到 GitHub。</desc>
           <defs><marker id="arrowGit" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#c7653d"/></marker></defs>
@@ -309,7 +316,7 @@ ls -lah dist</code></pre></div>
           <g stroke="#c7653d" stroke-width="3" marker-end="url(#arrowGit)"><path d="M265 127H335"/><path d="M580 127H650"/></g><text x="300" y="112" text-anchor="middle" font-size="12" fill="#a84c2c">commit</text><text x="615" y="112" text-anchor="middle" font-size="12" fill="#a84c2c">push</text>
         </svg>
       </div>
-      <h3>7.1 优先让 Codex 创建并推送仓库</h3>
+      <h3>7.1 让 Codex 创建仓库并推送代码</h3>
       <div class="code-block prompt"><div class="code-head"><span>复制给 Codex：创建 Git 与 GitHub 仓库</span><button class="copy" type="button">复制</button></div><pre><code>请替我完成当前网站的 Git 和 GitHub 初始化，但外部创建前先向我确认一次。
 要求：
 - 先检查 .gitignore 和敏感信息，发现密码、API Key、证件、手机号或原始简历就停止；
@@ -324,8 +331,9 @@ ls -lah dist</code></pre></div>
       <p>打开 <a href="https://github.com/new" target="_blank" rel="noopener">https://github.com/new</a>：Owner 选择你的账号；Repository name 填与本地文件夹一致的名称；选择 Public；不要勾选自动添加 README、.gitignore 或 License；点击 <b>Create repository</b>。然后回到 Codex，告诉它“空仓库已创建，请继续使用 SSH 推送”。</p>
       <h3>7.3 Codex 检查隐私和 .gitignore</h3>
       <p>提交前让 Codex 检查是否包含 <span class="inline-code">.env</span>、API Key、原始简历、手机号、证件、客户内部文件和系统缓存。公开网站所需邮箱可以保留，但必须是你明确允许公开的邮箱。</p>
-      <h3>7.4 下面命令用于理解，不要求小白手敲</h3>
-      <div class="code-block"><div class="code-head"><span>把占位符换成自己的值</span><button class="copy" type="button">复制</button></div><pre><code>git init
+      <h3>7.4 这些是 Codex 会自动执行的步骤</h3>
+      <p>你不需要打开终端或逐条输入。下面只用于帮助你认识 Codex 正在做什么；真正操作请使用 7.1 的完整提示词。</p>
+      <div class="code-block"><div class="code-head"><span>仅供理解 · 不需要手敲</span></div><pre><code>git init
 git add .
 git status
 git commit -m "init"
@@ -333,20 +341,12 @@ git branch -M main
 git remote add origin git@github.com:YOUR_USERNAME/YOUR_REPO.git
 git push -u origin main</code></pre></div>
       <div class="note"><strong>第一次 SSH 连接：</strong>可能需要先创建 SSH Key 并添加到 GitHub。请使用 <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" target="_blank" rel="noopener">GitHub SSH 官方指南</a>，不要把私钥内容发给 Codex；只有以 <span class="inline-code">.pub</span> 结尾的公钥可以添加到 GitHub。</div>
-      <div class="code-block prompt"><div class="code-head"><span>Git 推送失败提示词</span><button class="copy" type="button">复制</button></div><pre><code>我正在把本地网站通过 SSH 推送到 GitHub。
-请先做只读诊断，不要删除提交、不要 reset --hard、不要改成 HTTPS。
-
-git status：
-【输出】
-git remote -v：
-【输出】
-git branch --show-current：
-【输出】
-git push 的完整错误：
-【输出】
-
-请判断问题属于 Git 身份、SSH Key、远端地址、分支名、远端已有提交还是权限，并给最小修复步骤。</code></pre></div>
-      <div class="success"><strong>成功标志：</strong>刷新 GitHub 仓库页面能看到项目文件；本地运行 <span class="inline-code">git status</span> 显示 working tree clean；远端 URL 以 <span class="inline-code">git@github.com:</span> 开头。</div>
+      <div class="code-block prompt"><div class="code-head"><span>Git 推送失败提示词</span><button class="copy" type="button">复制</button></div><pre><code>刚才的 GitHub 推送失败了。请直接读取当前项目状态和完整错误，不要让我手动打开终端收集信息。
+请先只读检查 git status、git remote -v、当前分支、SSH 连接和最近一次推送错误。
+判断问题属于 Git 身份、SSH Key、远端地址、分支名、远端已有提交还是权限，并解释证据。
+只做最小修复；不要删除提交、不要 reset --hard、不要强制推送、不要改成 HTTPS 远端。
+如果需要 GitHub 登录、浏览器授权或粘贴公钥，请停下来给我官方网址和逐步操作；我完成后你再继续推送并验证。</code></pre></div>
+      <div class="success"><strong>成功标志：</strong>刷新 GitHub 仓库页面能看到项目文件；Codex 报告 <span class="inline-code">git status</span> 为 working tree clean；远端 URL 以 <span class="inline-code">git@github.com:</span> 开头。</div>
       <div class="chapter-complete"><input class="chapter-check" type="checkbox" id="done7"><label for="done7">我已完成第 7 章</label></div>
     </section>
 
@@ -613,13 +613,16 @@ dig / Resolve-DnsName 输出：【】
         <tr><td>HTTPS 不可选</td><td>DNS 是否完全传播、是否有冲突 AAAA/CNAME</td><td>购买第三方证书</td></tr>
         <tr><td>改了但线上没变</td><td>git status、push、Actions commit SHA、缓存</td><td>重建整个仓库</td></tr>
       </tbody></table></div>
-      <h3>每次收尾的最小命令</h3>
-      <div class="code-block"><div class="code-head"><span>在正确项目目录执行</span><button class="copy" type="button">复制</button></div><pre><code>git status
-git diff
-npm run build
-git add .
-git commit -m "describe the change"
-git push</code></pre></div>
+      <h3>每次更新后，让 Codex 自动收尾</h3>
+      <div class="code-block prompt"><div class="code-head"><span>复制给 Codex · 构建、提交、推送</span><button class="copy" type="button">复制</button></div><pre><code>请替我完成本次网站更新的安全收尾，不要让我手动打开终端或输入 Git 命令：
+1. 确认当前项目目录和 git status；
+2. 查看 git diff，检查是否混入密码、密钥、个人隐私或无关文件；
+3. 运行与本次修改相关的最小验证和 npm run build；
+4. 汇报修改文件、验证结果和准备提交的内容；
+5. 等我确认后，只暂存相关文件，创建清楚的 commit 并推送到现有 SSH 远端；
+6. 查看对应 GitHub Actions，成功后告诉我线上检查地址。
+遇到登录、浏览器授权、权限确认或远端冲突时立即停下，解释情况并告诉我应该亲手做什么。
+不要使用 git add .、reset --hard、force push，也不要上传任何秘密或私人文件。</code></pre></div>
       <div class="success"><strong>真正完成：</strong>本地检查通过、Git 记录清楚、Actions 对应提交成功、线上域名实际可访问，且没有把秘密或私人文件推上 GitHub。</div>
       <div class="chapter-complete"><input class="chapter-check" type="checkbox" id="done12"><label for="done12">我已完成第 12 章</label></div>
     </section>
